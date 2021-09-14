@@ -1,6 +1,6 @@
-# {Insert Repository Name Here}
+# TPDM-Community-Extension
 
-{Insert project information here}
+This repository hosts the code for the Ed-Fi TPDM-Community extension that can be deployed as plugins to extend ODS/API implementations
 
 ## Legal Information
 
