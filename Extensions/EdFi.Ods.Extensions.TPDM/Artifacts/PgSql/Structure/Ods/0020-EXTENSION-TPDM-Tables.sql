@@ -532,6 +532,7 @@ CREATE TABLE tpdm.CandidateCohortYear (
     CandidateIdentifier VARCHAR(32) NOT NULL,
     CohortYearTypeDescriptorId INT NOT NULL,
     SchoolYear SMALLINT NOT NULL,
+    TermDescriptorId INT NULL,
     CreateDate TIMESTAMP NOT NULL,
     CONSTRAINT CandidateCohortYear_PK PRIMARY KEY (CandidateIdentifier, CohortYearTypeDescriptorId, SchoolYear)
 ); 
@@ -635,6 +636,7 @@ CREATE TABLE tpdm.CandidateEducatorPreparationProgramAssociationCohortYear (
     ProgramName VARCHAR(255) NOT NULL,
     ProgramTypeDescriptorId INT NOT NULL,
     SchoolYear SMALLINT NOT NULL,
+    TermDescriptorId INT NULL,
     CreateDate TIMESTAMP NOT NULL,
     CONSTRAINT CandidateEducatorPreparationProgramAssociationCohortYear_PK PRIMARY KEY (BeginDate, CandidateIdentifier, CohortYearTypeDescriptorId, EducationOrganizationId, ProgramName, ProgramTypeDescriptorId, SchoolYear)
 ); 

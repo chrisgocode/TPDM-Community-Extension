@@ -372,7 +372,8 @@ COMMENT ON COLUMN tpdm.CandidateCharacteristicDescriptor.CandidateCharacteristic
 COMMENT ON TABLE tpdm.CandidateCohortYear IS 'The type and year of a cohort (e.g., 9th grade) the student belongs to as determined by the year that student entered a specific grade.';
 COMMENT ON COLUMN tpdm.CandidateCohortYear.CandidateIdentifier IS 'A unique alphanumeric code assigned to a candidate.';
 COMMENT ON COLUMN tpdm.CandidateCohortYear.CohortYearTypeDescriptorId IS 'The type of cohort year (9th grade, graduation).';
-COMMENT ON COLUMN tpdm.CandidateCohortYear.SchoolYear IS 'The value of the  school year for the Cohort.';
+COMMENT ON COLUMN tpdm.CandidateCohortYear.SchoolYear IS 'The school year associated with the cohort; for example, the intended school year of graduation.';
+COMMENT ON COLUMN tpdm.CandidateCohortYear.TermDescriptorId IS 'The term associated with the cohort year; for example, the intended term of graduation.';
 
 -- Extended Properties [tpdm].[CandidateDegreeSpecialization] --
 COMMENT ON TABLE tpdm.CandidateDegreeSpecialization IS 'Information around the area(s) of specialization for an individual.';
@@ -442,7 +443,8 @@ COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.
 COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.EducationOrganizationId IS 'The identifier assigned to an education organization.';
 COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.ProgramName IS 'The name of the Educator Preparation Program.';
 COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.ProgramTypeDescriptorId IS 'The type of program.';
-COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.SchoolYear IS 'The value of the  school year for the Cohort.';
+COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.SchoolYear IS 'The school year associated with the cohort; for example, the intended school year of graduation.';
+COMMENT ON COLUMN tpdm.CandidateEducatorPreparationProgramAssociationCohortYear.TermDescriptorId IS 'The term associated with the cohort year; for example, the intended term of graduation.';
 
 -- Extended Properties [tpdm].[CandidateEducatorPreparationProgramAssociationDegreeSpec_2501c4] --
 COMMENT ON TABLE tpdm.CandidateEducatorPreparationProgramAssociationDegreeSpec_2501c4 IS 'Information around the area(s) of specialization for an individual.';

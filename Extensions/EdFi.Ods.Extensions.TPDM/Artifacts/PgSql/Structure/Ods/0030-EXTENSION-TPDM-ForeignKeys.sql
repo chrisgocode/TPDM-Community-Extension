@@ -751,6 +751,13 @@ REFERENCES edfi.SchoolYearType (SchoolYear)
 CREATE INDEX FK_106e8f_SchoolYearType
 ON tpdm.CandidateCohortYear (SchoolYear ASC);
 
+ALTER TABLE tpdm.CandidateCohortYear ADD CONSTRAINT FK_106e8f_TermDescriptor FOREIGN KEY (TermDescriptorId)
+REFERENCES edfi.TermDescriptor (TermDescriptorId)
+;
+
+CREATE INDEX FK_106e8f_TermDescriptor
+ON tpdm.CandidateCohortYear (TermDescriptorId ASC);
+
 ALTER TABLE tpdm.CandidateDegreeSpecialization ADD CONSTRAINT FK_e0eaf2_Candidate FOREIGN KEY (CandidateIdentifier)
 REFERENCES tpdm.Candidate (CandidateIdentifier)
 ON DELETE CASCADE
@@ -865,6 +872,13 @@ REFERENCES edfi.SchoolYearType (SchoolYear)
 
 CREATE INDEX FK_620d03_SchoolYearType
 ON tpdm.CandidateEducatorPreparationProgramAssociationCohortYear (SchoolYear ASC);
+
+ALTER TABLE tpdm.CandidateEducatorPreparationProgramAssociationCohortYear ADD CONSTRAINT FK_620d03_TermDescriptor FOREIGN KEY (TermDescriptorId)
+REFERENCES edfi.TermDescriptor (TermDescriptorId)
+;
+
+CREATE INDEX FK_620d03_TermDescriptor
+ON tpdm.CandidateEducatorPreparationProgramAssociationCohortYear (TermDescriptorId ASC);
 
 ALTER TABLE tpdm.CandidateEducatorPreparationProgramAssociationDegreeSpec_2501c4 ADD CONSTRAINT FK_2501c4_CandidateEducatorPreparationProgramAssociation FOREIGN KEY (BeginDate, CandidateIdentifier, EducationOrganizationId, ProgramName, ProgramTypeDescriptorId)
 REFERENCES tpdm.CandidateEducatorPreparationProgramAssociation (BeginDate, CandidateIdentifier, EducationOrganizationId, ProgramName, ProgramTypeDescriptorId)

@@ -3,6 +3,7 @@
   "schemaDefinition": {
     "logicalName": "TPDM",
     "physicalName": "tpdm",
+    "description": "TPDM-Community",
     "version": "1.1.0"
   },
   "aggregateDefinitions": [
@@ -23968,7 +23969,7 @@
             "scale": 0,
             "isNullable": false
           },
-          "description": "The value of the  school year for the Cohort.",
+          "description": "The school year associated with the cohort; for example, the intended school year of graduation.",
           "isIdentifying": true,
           "isServerAssigned": false,
           "columnNames": {
@@ -23982,6 +23983,66 @@
       "constraintNames": {
         "sqlServer": "FK_CandidateCohortYear_SchoolYearType",
         "postgreSql": "FK_106e8f_SchoolYearType"
+      },
+      "potentiallyLogical": false
+    },
+    {
+      "fullName": {
+        "schema": "tpdm",
+        "name": "FK_CandidateCohortYear_TermDescriptor"
+      },
+      "cardinality": "OneToZeroOrMore",
+      "primaryEntityFullName": {
+        "schema": "edfi",
+        "name": "TermDescriptor"
+      },
+      "primaryEntityProperties": [
+        {
+          "propertyName": "TermDescriptorId",
+          "propertyType": {
+            "dbType": "Int32",
+            "maxLength": 0,
+            "precision": 10,
+            "scale": 0,
+            "isNullable": false
+          },
+          "description": "A unique identifier used as Primary Key, not derived from business logic, when acting as Foreign Key, references the parent table.",
+          "isIdentifying": false,
+          "isServerAssigned": false,
+          "columnNames": {
+            "sqlServer": "TermDescriptorId",
+            "postgreSql": "TermDescriptorId"
+          }
+        }
+      ],
+      "secondaryEntityFullName": {
+        "schema": "tpdm",
+        "name": "CandidateCohortYear"
+      },
+      "secondaryEntityProperties": [
+        {
+          "propertyName": "TermDescriptorId",
+          "propertyType": {
+            "dbType": "Int32",
+            "maxLength": 0,
+            "precision": 10,
+            "scale": 0,
+            "isNullable": true
+          },
+          "description": "The term associated with the cohort year; for example, the intended term of graduation.",
+          "isIdentifying": false,
+          "isServerAssigned": false,
+          "columnNames": {
+            "sqlServer": "TermDescriptorId",
+            "postgreSql": "TermDescriptorId"
+          }
+        }
+      ],
+      "isIdentifying": false,
+      "isRequired": false,
+      "constraintNames": {
+        "sqlServer": "FK_CandidateCohortYear_TermDescriptor",
+        "postgreSql": "FK_106e8f_TermDescriptor"
       },
       "potentiallyLogical": false
     },
@@ -25540,7 +25601,7 @@
             "scale": 0,
             "isNullable": false
           },
-          "description": "The value of the  school year for the Cohort.",
+          "description": "The school year associated with the cohort; for example, the intended school year of graduation.",
           "isIdentifying": true,
           "isServerAssigned": false,
           "columnNames": {
@@ -25554,6 +25615,66 @@
       "constraintNames": {
         "sqlServer": "FK_CandidateEducatorPreparationProgramAssociationCohortYear_SchoolYearType",
         "postgreSql": "FK_620d03_SchoolYearType"
+      },
+      "potentiallyLogical": false
+    },
+    {
+      "fullName": {
+        "schema": "tpdm",
+        "name": "FK_CandidateEducatorPreparationProgramAssociationCohortYear_TermDescriptor"
+      },
+      "cardinality": "OneToZeroOrMore",
+      "primaryEntityFullName": {
+        "schema": "edfi",
+        "name": "TermDescriptor"
+      },
+      "primaryEntityProperties": [
+        {
+          "propertyName": "TermDescriptorId",
+          "propertyType": {
+            "dbType": "Int32",
+            "maxLength": 0,
+            "precision": 10,
+            "scale": 0,
+            "isNullable": false
+          },
+          "description": "A unique identifier used as Primary Key, not derived from business logic, when acting as Foreign Key, references the parent table.",
+          "isIdentifying": false,
+          "isServerAssigned": false,
+          "columnNames": {
+            "sqlServer": "TermDescriptorId",
+            "postgreSql": "TermDescriptorId"
+          }
+        }
+      ],
+      "secondaryEntityFullName": {
+        "schema": "tpdm",
+        "name": "CandidateEducatorPreparationProgramAssociationCohortYear"
+      },
+      "secondaryEntityProperties": [
+        {
+          "propertyName": "TermDescriptorId",
+          "propertyType": {
+            "dbType": "Int32",
+            "maxLength": 0,
+            "precision": 10,
+            "scale": 0,
+            "isNullable": true
+          },
+          "description": "The term associated with the cohort year; for example, the intended term of graduation.",
+          "isIdentifying": false,
+          "isServerAssigned": false,
+          "columnNames": {
+            "sqlServer": "TermDescriptorId",
+            "postgreSql": "TermDescriptorId"
+          }
+        }
+      ],
+      "isIdentifying": false,
+      "isRequired": false,
+      "constraintNames": {
+        "sqlServer": "FK_CandidateEducatorPreparationProgramAssociationCohortYear_TermDescriptor",
+        "postgreSql": "FK_620d03_TermDescriptor"
       },
       "potentiallyLogical": false
     },

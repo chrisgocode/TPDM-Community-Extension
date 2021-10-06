@@ -662,7 +662,9 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'A unique alpha
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The type of cohort year (9th grade, graduation).', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateCohortYear', @level2type=N'COLUMN', @level2name=N'CohortYearTypeDescriptorId'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The value of the  school year for the Cohort.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateCohortYear', @level2type=N'COLUMN', @level2name=N'SchoolYear'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The school year associated with the cohort; for example, the intended school year of graduation.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateCohortYear', @level2type=N'COLUMN', @level2name=N'SchoolYear'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The term associated with the cohort year; for example, the intended term of graduation.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateCohortYear', @level2type=N'COLUMN', @level2name=N'TermDescriptorId'
 GO
 
 -- Extended Properties [tpdm].[CandidateDegreeSpecialization] --
@@ -788,7 +790,9 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The name of th
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The type of program.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateEducatorPreparationProgramAssociationCohortYear', @level2type=N'COLUMN', @level2name=N'ProgramTypeDescriptorId'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The value of the  school year for the Cohort.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateEducatorPreparationProgramAssociationCohortYear', @level2type=N'COLUMN', @level2name=N'SchoolYear'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The school year associated with the cohort; for example, the intended school year of graduation.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateEducatorPreparationProgramAssociationCohortYear', @level2type=N'COLUMN', @level2name=N'SchoolYear'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The term associated with the cohort year; for example, the intended term of graduation.', @level0type=N'SCHEMA', @level0name=N'tpdm', @level1type=N'TABLE', @level1name=N'CandidateEducatorPreparationProgramAssociationCohortYear', @level2type=N'COLUMN', @level2name=N'TermDescriptorId'
 GO
 
 -- Extended Properties [tpdm].[CandidateEducatorPreparationProgramAssociationDegreeSpecialization] --
