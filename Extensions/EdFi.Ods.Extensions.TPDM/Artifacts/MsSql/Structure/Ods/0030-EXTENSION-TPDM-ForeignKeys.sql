@@ -847,6 +847,14 @@ CREATE NONCLUSTERED INDEX [FK_CandidateCohortYear_SchoolYearType]
 ON [tpdm].[CandidateCohortYear] ([SchoolYear] ASC)
 GO
 
+ALTER TABLE [tpdm].[CandidateCohortYear] WITH CHECK ADD CONSTRAINT [FK_CandidateCohortYear_TermDescriptor] FOREIGN KEY ([TermDescriptorId])
+REFERENCES [edfi].[TermDescriptor] ([TermDescriptorId])
+GO
+
+CREATE NONCLUSTERED INDEX [FK_CandidateCohortYear_TermDescriptor]
+ON [tpdm].[CandidateCohortYear] ([TermDescriptorId] ASC)
+GO
+
 ALTER TABLE [tpdm].[CandidateDegreeSpecialization] WITH CHECK ADD CONSTRAINT [FK_CandidateDegreeSpecialization_Candidate] FOREIGN KEY ([CandidateIdentifier])
 REFERENCES [tpdm].[Candidate] ([CandidateIdentifier])
 ON DELETE CASCADE
@@ -975,6 +983,14 @@ GO
 
 CREATE NONCLUSTERED INDEX [FK_CandidateEducatorPreparationProgramAssociationCohortYear_SchoolYearType]
 ON [tpdm].[CandidateEducatorPreparationProgramAssociationCohortYear] ([SchoolYear] ASC)
+GO
+
+ALTER TABLE [tpdm].[CandidateEducatorPreparationProgramAssociationCohortYear] WITH CHECK ADD CONSTRAINT [FK_CandidateEducatorPreparationProgramAssociationCohortYear_TermDescriptor] FOREIGN KEY ([TermDescriptorId])
+REFERENCES [edfi].[TermDescriptor] ([TermDescriptorId])
+GO
+
+CREATE NONCLUSTERED INDEX [FK_CandidateEducatorPreparationProgramAssociationCohortYear_TermDescriptor]
+ON [tpdm].[CandidateEducatorPreparationProgramAssociationCohortYear] ([TermDescriptorId] ASC)
 GO
 
 ALTER TABLE [tpdm].[CandidateEducatorPreparationProgramAssociationDegreeSpecialization] WITH CHECK ADD CONSTRAINT [FK_CandidateEducatorPreparationProgramAssociationDegreeSpecialization_CandidateEducatorPreparationProgramAssociation] FOREIGN KEY ([BeginDate], [CandidateIdentifier], [EducationOrganizationId], [ProgramName], [ProgramTypeDescriptorId])

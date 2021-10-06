@@ -757,6 +757,7 @@ CREATE TABLE [tpdm].[CandidateCohortYear] (
     [CandidateIdentifier] [NVARCHAR](32) NOT NULL,
     [CohortYearTypeDescriptorId] [INT] NOT NULL,
     [SchoolYear] [SMALLINT] NOT NULL,
+    [TermDescriptorId] [INT] NULL,
     [CreateDate] [DATETIME2] NOT NULL,
     CONSTRAINT [CandidateCohortYear_PK] PRIMARY KEY CLUSTERED (
         [CandidateIdentifier] ASC,
@@ -911,6 +912,7 @@ CREATE TABLE [tpdm].[CandidateEducatorPreparationProgramAssociationCohortYear] (
     [ProgramName] [NVARCHAR](255) NOT NULL,
     [ProgramTypeDescriptorId] [INT] NOT NULL,
     [SchoolYear] [SMALLINT] NOT NULL,
+    [TermDescriptorId] [INT] NULL,
     [CreateDate] [DATETIME2] NOT NULL,
     CONSTRAINT [CandidateEducatorPreparationProgramAssociationCohortYear_PK] PRIMARY KEY CLUSTERED (
         [BeginDate] ASC,
