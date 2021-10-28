@@ -1790,6 +1790,8 @@ BEGIN
             END
         END
 
+    -- Push claimId to the stack
+    INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
 
     -- Processing children of http://ed-fi.org/ods/identity/claims/domains/personRoleAssociations
     ----------------------------------------------------------------------------------------------------------------------------
