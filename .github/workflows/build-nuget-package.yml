@@ -45,4 +45,4 @@ jobs:
           . Initialize-PowershellForDevelopment.ps1
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         shell: pwsh 
-        working-directory: ${{ github.workspace }}/../Ed-Fi-ODS-Implementation/
+        working-directory: Ed-Fi-ODS-Implementation/
