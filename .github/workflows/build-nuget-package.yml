@@ -40,7 +40,7 @@ jobs:
 
       - name: Run CodeGen
         run: |
-          Get-ChildItem -Path .
+          (Get-ChildItem -Directory .).FullName
           $ErrorActionPreference = 'Stop'
           . Initialize-PowershellForDevelopment.ps1
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
