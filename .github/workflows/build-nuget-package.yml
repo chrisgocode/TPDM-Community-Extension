@@ -42,5 +42,6 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           . Ed-Fi-ODS-Implementation/Initialize-PowershellForDevelopment.ps1
-          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  Ed-Fi-Extensions\Extensions\EdFi.Ods.Extensions.TPDM
+          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         shell: pwsh 
+        working-directory: ../
