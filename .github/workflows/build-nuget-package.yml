@@ -26,5 +26,8 @@ jobs:
     
       - uses: NuGet/setup-nuget@v1.0.5
 
-      - name: Restore NuGet packages
-        run: nuget restore Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+      - name: Setup DotNet
+        with:
+          dotnet-version: '3.1.x'
+      
+      - run: dotnet restore 
