@@ -41,7 +41,7 @@ jobs:
       - name: Run CodeGen
         run: |
           $ErrorActionPreference = 'Stop'
-          . Ed-Fi-ODS-Implementation/Initialize-PowershellForDevelopment.ps1
+          . Initialize-PowershellForDevelopment.ps1
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         shell: pwsh 
-        working-directory: ../
+        working-directory: ${{ github.workspace }}/Ed-Fi-ODS-Implementation/
