@@ -12,12 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: 'https://github.com/Ed-Fi-Alliance-OSS/Ed-Fi-ODS.git'
+          repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@v2
         with:
-          repository: 'https://github.com/Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation.git'
+          repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@v2
