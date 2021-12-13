@@ -1,9 +1,10 @@
-name: build NPM package
+name: build Nuget package
 
 on:
   release:
     types: [published]
   workflow_dispatch:
+  push:
 
 jobs:
   build:
