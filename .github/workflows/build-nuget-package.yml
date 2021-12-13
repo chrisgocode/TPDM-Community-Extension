@@ -28,11 +28,19 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
-          
+      
       - uses: NuGet/setup-nuget@v1.0.5
       
+      - name: Restore NuGet packages
       - run: |
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Common/EdFi.Ods.Common.csproj
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Api/EdFi.Ods.Api.csproj
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Standard/EdFi.Ods.Standard.csproj
           dotnet restore Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj
+
+      - name: Run CodeGen
+        run: |
+          $ErrorActionPreference = 'Stop'
+          . Ed-Fi-ODS-Implementation/Initialize-PowershellForDevelopment.ps1
+          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  Ed-Fi-Extensions\Extensions\EdFi.Ods.Extensions.TPDM
+        shell: pwsh 
