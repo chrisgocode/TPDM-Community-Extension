@@ -1,0 +1,29 @@
+name: build NPM package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'https://github.com/Ed-Fi-Alliance-OSS/Ed-Fi-ODS.git'
+          path: Ed-Fi-ODS
+
+      - uses: actions/checkout@v2
+        with:
+          repository: 'https://github.com/Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation.git'
+          path: Ed-Fi-ODS-Implementation
+
+      - uses: actions/checkout@v2
+        with:
+          path: Ed-Fi-Extensions
+    
+      - uses: NuGet/setup-nuget@v1.0.5
+
+      - name: Restore NuGet packages
+        run: nuget restore Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
