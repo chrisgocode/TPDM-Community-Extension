@@ -31,4 +31,5 @@ jobs:
           
       - uses: NuGet/setup-nuget@v1.0.5
       
-      - run: dotnet restore 
+      - run: |
+          dotnet restore Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj
