@@ -16,13 +16,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          ref: Ed-Fi ODS / API Suite3 v5.3
+          ref: v5.3
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@v2
         with:
           repository: Ed-Fi-AlliCance-OSS/Ed-Fi-ODS-Implementation
-          ref: Ed-Fi ODS / API Suite3 v5.3
+          ref: v5.3
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@v2
