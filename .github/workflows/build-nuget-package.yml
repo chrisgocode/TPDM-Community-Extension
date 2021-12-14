@@ -51,3 +51,7 @@ jobs:
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         shell: pwsh 
         working-directory: Ed-Fi-ODS-Implementation
+        
+      - name: Build
+        run: dotnet build
+        working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
