@@ -11,8 +11,8 @@ env:
   version_major: 5
   version_minor: 3
   version_patch: ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
-  version_informational: $$ {{ format('v{0}.{1}', env.version_major, env.version_minor ) }}
-  version_core: $ {{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}
+  version_informational: $$ {{ format('v{0}.{1}', env.version_major , env.version_minor ) }}
+  version_core: $ {{ format('{0}.{1}.{2}', $ {{ env.version_major }}, env.version_minor , env.version_patch) }}
 
 jobs:
   build:
