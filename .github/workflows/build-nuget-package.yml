@@ -4,7 +4,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-  push:
 
 env:
   version_suite: 3
@@ -68,7 +67,6 @@ jobs:
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
-        shell: pwsh 
         working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
