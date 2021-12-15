@@ -21,7 +21,7 @@ jobs:
           echo "version_core=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $GITHUB_ENV
           echo "${{ env.version_suite }}"
           echo "${{ env.version_patch }}"
-          echo "$version_informational"
+          echo "${{ version_informational }}"
           echo "$version_core"
           echo "$GITHUB_ENV"
           
