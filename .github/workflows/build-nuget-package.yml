@@ -64,4 +64,16 @@ jobs:
         working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
 
       - name: Pack
-        run: NuGet.exe pack ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.nuspec -OutputDirectory ${{ github.workspace }}\NugetPackages -Version 5.3.67 -Properties configuration=release -Properties "authors=Ed-Fi Alliance" -Properties "owners=Ed-Fi Alliance" -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" -Properties id=EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0 -Properties title=EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0 -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" -NoPackageAnalysis -NoDefaultExcludes
+        run: | 
+          nuget pack EdFi.Ods.Extensions.TPDM.nuspec `
+          -OutputDirectory ${{ github.workspace }}\NugetPackages `
+          -Version 5.3.67 `
+          -Properties configuration=release `
+          -Properties "authors=Ed-Fi Alliance" `
+          -Properties "owners=Ed-Fi Alliance" `
+          -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
+          -Properties id=EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0 `
+          -Properties title=EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0 `
+          -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" `
+          -NoPackageAnalysis -NoDefaultExcludes
+        working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
