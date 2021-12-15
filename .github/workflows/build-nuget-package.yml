@@ -17,13 +17,8 @@ jobs:
     steps:
       - name: Set env variables 
         run: |
-          echo "VER_INFO=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
-          echo "VER_CORE=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $env:GITHUB_ENV
-      - run: |
-          gci env:* | sort-object name
-          echo "${{ env.VER_INFO }}"
-          echo $env:VER_INFO
-          echo $VER_INFO
+          echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
+          echo "version_core=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $env:GITHUB_ENV
           
       - name: Git long filename support
         run: git config --system core.longpaths true
@@ -31,13 +26,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          ref: ${{ env.version.informational }}
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@v2
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          ref: ${{ env.version.informational }}
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@v2
@@ -54,7 +49,7 @@ jobs:
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
-          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite${{ env.version.suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
+          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
           -replace '"(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)"','1.1.0' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
@@ -84,13 +79,13 @@ jobs:
         run: | 
           nuget pack EdFi.Ods.Extensions.TPDM.nuspec `
           -OutputDirectory ${{ github.workspace }}\NugetPackages `
-          -Version ${{ env.version.core }} `
+          -Version ${{ env.version_core }} `
           -Properties configuration=release `
           -Properties "authors=Ed-Fi Alliance" `
           -Properties "owners=Ed-Fi Alliance" `
           -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
-          -Properties id=EdFi.Suite${{ env.version.suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
-          -Properties title=EdFi.Suite${{ env.version.suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
+          -Properties id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
+          -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
@@ -98,5 +93,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0.${{ env.version.core }}.nupkg
-          path: NugetPackages\EdFi.Ods.Extensions.TPDM.${{ env.version.core }}.nupkg
+          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0.${{ env.version_core }}.nupkg
+          path: NugetPackages\EdFi.Ods.Extensions.TPDM.${{ env.version_core }}.nupkg
