@@ -39,7 +39,7 @@ jobs:
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
-          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0' `
+          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: Ed-Fi-Extensions
       
