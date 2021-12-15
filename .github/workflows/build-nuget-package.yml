@@ -18,6 +18,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - run: |
+          echo "${{ version.suite }}"
+          echo "${{ version.patch }}"
+          echo "$VERSION.PATCH"
       - name: Git long filename support
         run: git config --system core.longpaths true
         
@@ -47,7 +51,8 @@ jobs:
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
-          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite${{ env.version.suite }}.Ods.Extensions.TPDM.Community.1.1.0' |
+          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite${{ env.version.suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
+          -replace '"(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)"','1.1.0' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: Ed-Fi-Extensions
