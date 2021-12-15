@@ -22,6 +22,8 @@ jobs:
       - run: |
           gci env:* | sort-object name
           echo "${{ env.VER_INFO }}"
+          echo $env:VER_INFO
+          echo $VER_INFO
           
       - name: Git long filename support
         run: git config --system core.longpaths true
