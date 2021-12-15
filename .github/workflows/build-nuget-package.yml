@@ -19,8 +19,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - run: |
-          echo "${{ version_suite }}"
-          echo "${{ version_patch }}"
+          echo "${{ env.version_suite }}"
+          echo "${{ env.version_patch }}"
           echo "$VERSION_PATCH"
       - name: Git long filename support
         run: git config --system core.longpaths true
