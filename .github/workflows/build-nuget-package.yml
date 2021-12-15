@@ -17,10 +17,11 @@ jobs:
     steps:
       - name: Set env variables 
         run: |
-          echo "VER_INFO=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $GITHUB_ENV
-          echo "VER_CORE=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $GITHUB_ENV
+          $env:VER_INFO="${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}"
+          $env:VER_CORE="${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}"
       - run: |
           gci env:* | sort-object name
+          echo "$VER_INFO"
           
       - name: Git long filename support
         run: git config --system core.longpaths true
