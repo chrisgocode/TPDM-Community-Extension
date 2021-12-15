@@ -72,7 +72,7 @@ jobs:
         working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
-        run: dotnet build --configuration release --version-suffix ${{ env.version.core }} --no-restore
+        run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
         working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
 
       - name: Pack
