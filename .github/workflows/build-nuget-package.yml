@@ -20,11 +20,7 @@ jobs:
           echo "VER_INFO=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $GITHUB_ENV
           echo "VER_CORE=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $GITHUB_ENV
       - run: |
-          echo "${{ env.version_suite }}"
-          echo "${{ env.version_patch }}"
-          echo "${{ env.VER_CORE }}"
-          echo "$VER_CORE"
-          echo "$GITHUB_ENV"
+          gci env:* | sort-object name
           
       - name: Git long filename support
         run: git config --system core.longpaths true
