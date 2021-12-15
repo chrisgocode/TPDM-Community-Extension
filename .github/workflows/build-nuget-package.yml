@@ -23,7 +23,7 @@ jobs:
           echo "${{ env.version_patch }}"
           echo "$version_informational"
           echo "$version_core"
-          echo "${{ env.version_core }}"
+          echo "$GITHUB_ENV"
           
       - name: Git long filename support
         run: git config --system core.longpaths true
