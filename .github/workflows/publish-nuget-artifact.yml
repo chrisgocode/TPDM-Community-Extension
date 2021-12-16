@@ -9,5 +9,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.1.0
+      - name: Download Nuget package
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build-nuget-package.yml
