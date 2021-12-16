@@ -25,4 +25,4 @@ jobs:
           path: publish
       
       - name: Publish
-        run: dotnet nuget push --api-key AzureArtifacts publish/*.nupkg 
+        run: dotnet nuget push --api-key AzureArtifacts publish/*.nupkg --source ${{ env.AZURE_ARTIFACTS_FEED_URL }} 
