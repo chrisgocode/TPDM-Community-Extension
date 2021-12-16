@@ -9,6 +9,7 @@ env:
   version_major: 5
   version_minor: 3
   version_patch: ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
+  tpdm_version: 1.1.0
 jobs:
   build:
     runs-on: windows-latest
@@ -47,8 +48,8 @@ jobs:
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
-          -replace '(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
-          -replace '(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)','1.1.0' |
+          -replace '(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}' `
+          -replace '(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)','${{ env.tpdm_version }}' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: Ed-Fi-Extensions
@@ -81,8 +82,8 @@ jobs:
           -Properties "authors=Ed-Fi Alliance" `
           -Properties "owners=Ed-Fi Alliance" `
           -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
-          -Properties id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
-          -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0 `
+          -Properties id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
+          -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
@@ -90,5 +91,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0.${{ env.version_core }}.nupkg
-          path: NugetPackages\EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.${{ env.version_core }}.nupkg
+          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
+          path: NugetPackages\EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
