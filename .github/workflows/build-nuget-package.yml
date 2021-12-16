@@ -1,8 +1,7 @@
 name: build Nuget package
 
 on:
-  release:
-    types: [published]
+  push:
   workflow_dispatch:
 
 env:
