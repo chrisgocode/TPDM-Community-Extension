@@ -91,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v2.3.0
         with:
           name: EdFi.Suite3.Ods.Extensions.TPDM.Community.1.1.0.${{ env.version_core }}.nupkg
-          path: NugetPackages\EdFi.Ods.Extensions.TPDM.${{ env.version_core }}.nupkg
+          path: NugetPackages\EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.${{ env.version_core }}.nupkg
