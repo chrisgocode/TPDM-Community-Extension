@@ -1,0 +1,12 @@
+name: Publish to Azure Artifacts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.1.0
