@@ -37,18 +37,18 @@ jobs:
         with:
           path: Ed-Fi-Extensions
           
-      - name: Setup DotNet
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
+      #- name: Setup DotNet
+      #  uses: actions/setup-dotnet@v1
+      #  with:
+      #    dotnet-version: '3.1.x'
       
-      - uses: NuGet/setup-nuget@v1.0.5
+      #- uses: NuGet/setup-nuget@v1.0.5
       
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
-          -replace '"(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)"', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
-          -replace '"(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)"','1.1.0' |
+          -replace '(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.1.1.0' `
+          -replace '(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)','1.1.0' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: Ed-Fi-Extensions
