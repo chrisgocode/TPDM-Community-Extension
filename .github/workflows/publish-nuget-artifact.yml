@@ -3,13 +3,26 @@ name: Publish to Azure Artifacts
 on:
   workflow_dispatch:
   push:
+  
+env:
+  AZURE_ARTIFACTS_FEED_URL: https://pkgs.dev.azure.com/ed-fi-alliance/Ed-Fi-Alliance-OSS/_packaging/EdFi/nuget/v3/index.json
+  NUGET_AUTH_TOKEN: ${{ secrets.TPDM_AA_PUBLISH }} 
 
 jobs:
   publish:
     runs-on: windows-latest
 
     steps:
-      - name: Download Nuget package
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      - name: Download package
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build-nuget-package.yml
+          path: publish
+      
+      - name: Publish
+        run: dotnet nuget push --api-key AzureArtifacts publish/*.nupkg 
