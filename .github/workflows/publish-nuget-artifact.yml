@@ -13,10 +13,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      #- name: Setup DotNet
-      #  uses: actions/setup-dotnet@v1
-      #  with:
-      #    dotnet-version: '3.1.x'
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.TPDM_AA_PUBLISH }} 
 
       - name: Download package
         uses: dawidd6/action-download-artifact@v2
@@ -25,4 +27,5 @@ jobs:
           path: publish
       
       - name: Publish
-        run: dotnet nuget push --api-key ${{ env.NUGET_AUTH_TOKEN }} publish/*/*.nupkg --source ${{ env.AZURE_ARTIFACTS_FEED_URL }} 
+        run: dotnet nuget push publish/*/*.nupkg --api-key AzureArtifacts
+        #--source ${{ env.AZURE_ARTIFACTS_FEED_URL }} 
