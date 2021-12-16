@@ -2,8 +2,6 @@ name: Publish to Azure Artifacts
 
 on:
   workflow_dispatch:
-  #remove this for manual only publish
-  push:
   
 env:
   AZURE_ARTIFACTS_FEED_URL: https://pkgs.dev.azure.com/ed-fi-alliance/Ed-Fi-Alliance-OSS/_packaging/EdFi/nuget/v3/index.json
@@ -29,4 +27,3 @@ jobs:
       
       - name: Publish
         run: dotnet nuget push publish/*/*.nupkg --api-key AzureArtifacts
-        #--source ${{ env.AZURE_ARTIFACTS_FEED_URL }} 
