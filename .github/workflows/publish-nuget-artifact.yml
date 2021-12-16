@@ -2,6 +2,7 @@ name: Publish to Azure Artifacts
 
 on:
   workflow_dispatch:
+  #remove this for manual only publish
   push:
   
 env:
