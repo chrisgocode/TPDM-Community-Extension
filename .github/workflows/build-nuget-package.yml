@@ -10,7 +10,10 @@ env:
   version_minor: 3
   version_patch: ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
   tpdm_version: 1.1.0
-jobs:
+jobs:  
+  ed-fi-repository-scanner:    
+    uses: ed-fi-alliance-oss/ed-fi-actions/.github/workflows/repository-scanner.yml@latest
+    
   build:
     runs-on: windows-latest
     steps:
@@ -22,19 +25,19 @@ jobs:
       - name: Git long filename support
         run: git config --system core.longpaths true
         
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           path: Ed-Fi-Extensions
           
@@ -89,7 +92,7 @@ jobs:
         working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         
       - name: Upload artifact
-        uses: actions/upload-artifact@v2.3.0
+        uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571
         with:
           name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
           path: NugetPackages\EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
