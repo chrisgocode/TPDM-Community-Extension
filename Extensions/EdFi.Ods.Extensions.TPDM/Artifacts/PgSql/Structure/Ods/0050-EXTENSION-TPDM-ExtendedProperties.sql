@@ -9,12 +9,12 @@ COMMENT ON COLUMN tpdm.AidTypeDescriptor.AidTypeDescriptorId IS 'A unique identi
 -- Extended Properties [tpdm].[ApplicantProfile] --
 COMMENT ON TABLE tpdm.ApplicantProfile IS 'The profile of the person making an application';
 COMMENT ON COLUMN tpdm.ApplicantProfile.ApplicantProfileIdentifier IS 'Identifier assigned to a person making formal application for entrance into a program or an open staff position.';
-COMMENT ON COLUMN tpdm.ApplicantProfile.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the person.';
+COMMENT ON COLUMN tpdm.ApplicantProfile.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the individual.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.FirstName IS 'A name given to an individual at birth, baptism, or during another naming ceremony, or through legal change.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.MiddleName IS 'A secondary name given to an individual at birth, baptism, or during another naming ceremony.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.LastSurname IS 'The name borne in common by members of a family.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.GenerationCodeSuffix IS 'An appendage, if any, used to denote an individual''s generation in his family (e.g., Jr., Sr., III).';
-COMMENT ON COLUMN tpdm.ApplicantProfile.MaidenName IS 'The person''s maiden name.';
+COMMENT ON COLUMN tpdm.ApplicantProfile.MaidenName IS 'The individual''s maiden name.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.SexDescriptorId IS 'A person''s gender.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.BirthDate IS 'The month, day, and year on which an individual was born.';
 COMMENT ON COLUMN tpdm.ApplicantProfile.HispanicLatinoEthnicity IS 'An indication that the individual traces his or her origin or descent to Mexico, Puerto Rico, Cuba, Central, and South America, and other Spanish cultures, regardless of race. The term, "Spanish origin," can be used in addition to "Hispanic or Latino".';
@@ -78,15 +78,15 @@ COMMENT ON COLUMN tpdm.ApplicantProfileBackgroundCheck.Fingerprint IS 'Indicates
 -- Extended Properties [tpdm].[ApplicantProfileDisability] --
 COMMENT ON TABLE tpdm.ApplicantProfileDisability IS 'The disability condition(s) that best describes an individual''s impairment.';
 COMMENT ON COLUMN tpdm.ApplicantProfileDisability.ApplicantProfileIdentifier IS 'Identifier assigned to a person making formal application for entrance into a program or an open staff position.';
-COMMENT ON COLUMN tpdm.ApplicantProfileDisability.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.ApplicantProfileDisability.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.ApplicantProfileDisability.DisabilityDiagnosis IS 'A description of the disability diagnosis.';
-COMMENT ON COLUMN tpdm.ApplicantProfileDisability.OrderOfDisability IS 'The order by severity of student''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
+COMMENT ON COLUMN tpdm.ApplicantProfileDisability.OrderOfDisability IS 'The order by severity of individual''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
 COMMENT ON COLUMN tpdm.ApplicantProfileDisability.DisabilityDeterminationSourceTypeDescriptorId IS 'The source that provided the disability determination.';
 
 -- Extended Properties [tpdm].[ApplicantProfileDisabilityDesignation] --
 COMMENT ON TABLE tpdm.ApplicantProfileDisabilityDesignation IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
 COMMENT ON COLUMN tpdm.ApplicantProfileDisabilityDesignation.ApplicantProfileIdentifier IS 'Identifier assigned to a person making formal application for entrance into a program or an open staff position.';
-COMMENT ON COLUMN tpdm.ApplicantProfileDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.ApplicantProfileDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.ApplicantProfileDisabilityDesignation.DisabilityDesignationDescriptorId IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
 
 -- Extended Properties [tpdm].[ApplicantProfileEducatorPreparationProgramName] --
@@ -137,8 +137,8 @@ COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.AddressLine4 IS 'The
 COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.CountryDescriptorId IS 'The name of the country. It is strongly recommended that entries use only ISO 3166 2-letter country codes.';
 COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.Latitude IS 'The geographic latitude of the physical address.';
 COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.Longitude IS 'The geographic longitude of the physical address.';
-COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.BeginDate IS 'The first date the address is valid. For physical addresses, the date the person moved to that address.';
-COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.EndDate IS 'The last date the address is valid. For physical addresses, this would be the date the person moved from that address.';
+COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.BeginDate IS 'The first date the address is valid. For physical addresses, the date the individual moved to that address.';
+COMMENT ON COLUMN tpdm.ApplicantProfileInternationalAddress.EndDate IS 'The last date the address is valid. For physical addresses, the date the individual moved from that address.';
 
 -- Extended Properties [tpdm].[ApplicantProfileLanguage] --
 COMMENT ON TABLE tpdm.ApplicantProfileLanguage IS 'The language(s) the individual uses to communicate.';
@@ -258,7 +258,7 @@ COMMENT ON COLUMN tpdm.ApplicationTerm.TermDescriptorId IS 'The intended term of
 -- Extended Properties [tpdm].[AssessmentExtension] --
 COMMENT ON TABLE tpdm.AssessmentExtension IS '';
 COMMENT ON COLUMN tpdm.AssessmentExtension.AssessmentIdentifier IS 'A unique number or alphanumeric code assigned to an assessment.';
-COMMENT ON COLUMN tpdm.AssessmentExtension.Namespace IS 'Namespace for the Assessment.';
+COMMENT ON COLUMN tpdm.AssessmentExtension.Namespace IS 'Namespace for the assessment.';
 COMMENT ON COLUMN tpdm.AssessmentExtension.ProgramGatewayDescriptorId IS 'Identifies the program gateway an assessment may be associated with for continuation in the program.';
 
 -- Extended Properties [tpdm].[BackgroundCheckStatusDescriptor] --
@@ -272,12 +272,12 @@ COMMENT ON COLUMN tpdm.BackgroundCheckTypeDescriptor.BackgroundCheckTypeDescript
 -- Extended Properties [tpdm].[Candidate] --
 COMMENT ON TABLE tpdm.Candidate IS 'A candidate is both a person enrolled in a educator preparation program and a candidate to become an educator.';
 COMMENT ON COLUMN tpdm.Candidate.CandidateIdentifier IS 'A unique alphanumeric code assigned to a candidate.';
-COMMENT ON COLUMN tpdm.Candidate.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the person.';
+COMMENT ON COLUMN tpdm.Candidate.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the individual.';
 COMMENT ON COLUMN tpdm.Candidate.FirstName IS 'A name given to an individual at birth, baptism, or during another naming ceremony, or through legal change.';
 COMMENT ON COLUMN tpdm.Candidate.MiddleName IS 'A secondary name given to an individual at birth, baptism, or during another naming ceremony.';
 COMMENT ON COLUMN tpdm.Candidate.LastSurname IS 'The name borne in common by members of a family.';
 COMMENT ON COLUMN tpdm.Candidate.GenerationCodeSuffix IS 'An appendage, if any, used to denote an individual''s generation in his family (e.g., Jr., Sr., III).';
-COMMENT ON COLUMN tpdm.Candidate.MaidenName IS 'The person''s maiden name.';
+COMMENT ON COLUMN tpdm.Candidate.MaidenName IS 'The individual''s maiden name.';
 COMMENT ON COLUMN tpdm.Candidate.SexDescriptorId IS 'The sex of the candidate.';
 COMMENT ON COLUMN tpdm.Candidate.BirthDate IS 'The month, day, and year on which an individual was born.';
 COMMENT ON COLUMN tpdm.Candidate.BirthCity IS 'The city the student was born in.';
@@ -386,15 +386,15 @@ COMMENT ON COLUMN tpdm.CandidateDegreeSpecialization.EndDate IS 'The month, day,
 -- Extended Properties [tpdm].[CandidateDisability] --
 COMMENT ON TABLE tpdm.CandidateDisability IS 'The disability condition(s) that best describes an individual''s impairment.';
 COMMENT ON COLUMN tpdm.CandidateDisability.CandidateIdentifier IS 'A unique alphanumeric code assigned to a candidate.';
-COMMENT ON COLUMN tpdm.CandidateDisability.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.CandidateDisability.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.CandidateDisability.DisabilityDiagnosis IS 'A description of the disability diagnosis.';
-COMMENT ON COLUMN tpdm.CandidateDisability.OrderOfDisability IS 'The order by severity of student''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
+COMMENT ON COLUMN tpdm.CandidateDisability.OrderOfDisability IS 'The order by severity of individual''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
 COMMENT ON COLUMN tpdm.CandidateDisability.DisabilityDeterminationSourceTypeDescriptorId IS 'The source that provided the disability determination.';
 
 -- Extended Properties [tpdm].[CandidateDisabilityDesignation] --
 COMMENT ON TABLE tpdm.CandidateDisabilityDesignation IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
 COMMENT ON COLUMN tpdm.CandidateDisabilityDesignation.CandidateIdentifier IS 'A unique alphanumeric code assigned to a candidate.';
-COMMENT ON COLUMN tpdm.CandidateDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.CandidateDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.CandidateDisabilityDesignation.DisabilityDesignationDescriptorId IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
 
 -- Extended Properties [tpdm].[CandidateEducatorPreparationProgramAssociation] --
@@ -518,8 +518,8 @@ COMMENT ON COLUMN tpdm.CandidateInternationalAddress.AddressLine4 IS 'The fourth
 COMMENT ON COLUMN tpdm.CandidateInternationalAddress.CountryDescriptorId IS 'The name of the country. It is strongly recommended that entries use only ISO 3166 2-letter country codes.';
 COMMENT ON COLUMN tpdm.CandidateInternationalAddress.Latitude IS 'The geographic latitude of the physical address.';
 COMMENT ON COLUMN tpdm.CandidateInternationalAddress.Longitude IS 'The geographic longitude of the physical address.';
-COMMENT ON COLUMN tpdm.CandidateInternationalAddress.BeginDate IS 'The first date the address is valid. For physical addresses, the date the person moved to that address.';
-COMMENT ON COLUMN tpdm.CandidateInternationalAddress.EndDate IS 'The last date the address is valid. For physical addresses, this would be the date the person moved from that address.';
+COMMENT ON COLUMN tpdm.CandidateInternationalAddress.BeginDate IS 'The first date the address is valid. For physical addresses, the date the individual moved to that address.';
+COMMENT ON COLUMN tpdm.CandidateInternationalAddress.EndDate IS 'The last date the address is valid. For physical addresses, the date the individual moved from that address.';
 
 -- Extended Properties [tpdm].[CandidateLanguage] --
 COMMENT ON TABLE tpdm.CandidateLanguage IS 'The language(s) the individual uses to communicate.';
@@ -535,8 +535,8 @@ COMMENT ON COLUMN tpdm.CandidateLanguageUse.LanguageUseDescriptorId IS 'A descri
 -- Extended Properties [tpdm].[CandidateOtherName] --
 COMMENT ON TABLE tpdm.CandidateOtherName IS 'Other names (e.g., alias, nickname, previous legal name) associated with a person.';
 COMMENT ON COLUMN tpdm.CandidateOtherName.CandidateIdentifier IS 'A unique alphanumeric code assigned to a candidate.';
-COMMENT ON COLUMN tpdm.CandidateOtherName.OtherNameTypeDescriptorId IS 'The types of alternate names for a person.';
-COMMENT ON COLUMN tpdm.CandidateOtherName.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the person.';
+COMMENT ON COLUMN tpdm.CandidateOtherName.OtherNameTypeDescriptorId IS 'The types of alternate names for an individual.';
+COMMENT ON COLUMN tpdm.CandidateOtherName.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the individual.';
 COMMENT ON COLUMN tpdm.CandidateOtherName.FirstName IS 'A name given to an individual at birth, baptism, or during another naming ceremony, or through legal change.';
 COMMENT ON COLUMN tpdm.CandidateOtherName.MiddleName IS 'A secondary name given to an individual at birth, baptism, or during another naming ceremony.';
 COMMENT ON COLUMN tpdm.CandidateOtherName.LastSurname IS 'The name borne in common by members of a family.';
@@ -915,7 +915,7 @@ COMMENT ON COLUMN tpdm.EvaluationRating.TermDescriptorId IS 'The term for the se
 COMMENT ON COLUMN tpdm.EvaluationRating.EvaluationRatingLevelDescriptorId IS 'The rating level achieved based upon the rating or score.';
 COMMENT ON COLUMN tpdm.EvaluationRating.SectionIdentifier IS 'The local identifier assigned to a section.';
 COMMENT ON COLUMN tpdm.EvaluationRating.LocalCourseCode IS 'The local code assigned by the School that identifies the course offering provided for the instruction of students.';
-COMMENT ON COLUMN tpdm.EvaluationRating.SessionName IS 'The identifier for the calendar for the academic session (e.g., 2010/11, 2011 Summer).';
+COMMENT ON COLUMN tpdm.EvaluationRating.SessionName IS 'The identifier for the calendar for the academic session.';
 COMMENT ON COLUMN tpdm.EvaluationRating.SchoolId IS 'The identifier assigned to a school.';
 COMMENT ON COLUMN tpdm.EvaluationRating.EvaluationRatingStatusDescriptorId IS 'The Status of the poerformance evaluation.';
 
@@ -1028,7 +1028,7 @@ COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.LocalCourseCode IS 
 COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.SchoolId IS 'The identifier assigned to a school.';
 COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.SchoolYear IS 'The identifier for the school year.';
 COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.SectionIdentifier IS 'The local identifier assigned to a section.';
-COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.SessionName IS 'The identifier for the calendar for the academic session (e.g., 2010/11, 2011 Summer).';
+COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.SessionName IS 'The identifier for the calendar for the academic session.';
 COMMENT ON COLUMN tpdm.FieldworkExperienceSectionAssociation.StudentUSI IS 'A unique alphanumeric code assigned to a student.';
 
 -- Extended Properties [tpdm].[FieldworkTypeDescriptor] --
@@ -1087,7 +1087,7 @@ COMMENT ON COLUMN tpdm.GoalTypeDescriptor.GoalTypeDescriptorId IS 'A unique iden
 COMMENT ON TABLE tpdm.GraduationPlanRequiredCertification IS 'The title or reference to the certifiation(s) required for graduation.';
 COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.CertificationTitle IS 'The title of the Certification required for Graduation.';
 COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.EducationOrganizationId IS 'The identifier assigned to an education organization.';
-COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.GraduationPlanTypeDescriptorId IS 'The type of academic plan the student is following for graduation: for example, Minimum, Recommended, Distinguished, or Standard.';
+COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.GraduationPlanTypeDescriptorId IS 'The type of academic plan the student is following for graduation.';
 COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.GraduationSchoolYear IS 'The school year the student is expected to graduate.';
 COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.CertificationIdentifier IS 'Identifier or serial number assigned to the Certification.';
 COMMENT ON COLUMN tpdm.GraduationPlanRequiredCertification.Namespace IS 'Namespace for the Certification, typically associated with the issuing authority.';
@@ -1370,12 +1370,12 @@ COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.ElectronicMailAddress IS 'The 
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.GenderDescriptorId IS 'The gender with which a person associates.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.HispanicLatinoEthnicity IS 'An indication that the individual traces his or her origin or descent to Mexico, Puerto Rico, Cuba, Central, and South America, and other Spanish cultures, regardless of race. The term, "Spanish origin," can be used in addition to "Hispanic or Latino".';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.Met IS 'Indicator whether the person was met by a representative of the education organization.';
-COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the person.';
+COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.PersonalTitlePrefix IS 'A prefix used to denote the title, degree, position, or seniority of the individual.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.FirstName IS 'A name given to an individual at birth, baptism, or during another naming ceremony, or through legal change.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.MiddleName IS 'A secondary name given to an individual at birth, baptism, or during another naming ceremony.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.LastSurname IS 'The name borne in common by members of a family.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.GenerationCodeSuffix IS 'An appendage, if any, used to denote an individual''s generation in his family (e.g., Jr., Sr., III).';
-COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.MaidenName IS 'The person''s maiden name.';
+COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.MaidenName IS 'The individual''s maiden name.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.Notes IS 'Additional notes about the prospect.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.PreScreeningRating IS 'The rating initially assigned to the prospect prior to an official screening.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendance.RecruitmentEventAttendeeTypeDescriptorId IS 'Reflects the type of prospect, such as EPP Applicant, Hire, or Mentor Teacher.';
@@ -1406,18 +1406,18 @@ COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceCurrentPositionGradeLevel.Recru
 
 -- Extended Properties [tpdm].[RecruitmentEventAttendanceDisability] --
 COMMENT ON TABLE tpdm.RecruitmentEventAttendanceDisability IS 'The disability condition(s) that best describes an individual''s impairment.';
-COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.EducationOrganizationId IS 'The identifier assigned to an education organization.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.EventDate IS 'The date of the event.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.EventTitle IS 'The title of the event.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.RecruitmentEventAttendeeIdentifier IS 'The identifier for the attendee to a recuitment event.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.DisabilityDiagnosis IS 'A description of the disability diagnosis.';
-COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.OrderOfDisability IS 'The order by severity of student''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
+COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.OrderOfDisability IS 'The order by severity of individual''s disabilities: 1- Primary, 2 -  Secondary, 3 - Tertiary, etc.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisability.DisabilityDeterminationSourceTypeDescriptorId IS 'The source that provided the disability determination.';
 
 -- Extended Properties [tpdm].[RecruitmentEventAttendanceDisabilityDesignation] --
 COMMENT ON TABLE tpdm.RecruitmentEventAttendanceDisabilityDesignation IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
-COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a child''s impairment.';
+COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisabilityDesignation.DisabilityDescriptorId IS 'A disability category that describes a individual''s impairment.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisabilityDesignation.DisabilityDesignationDescriptorId IS 'Whether the disability is IDEA, Section 504, or other disability designation.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisabilityDesignation.EducationOrganizationId IS 'The identifier assigned to an education organization.';
 COMMENT ON COLUMN tpdm.RecruitmentEventAttendanceDisabilityDesignation.EventDate IS 'The date of the event.';
@@ -1530,13 +1530,7 @@ COMMENT ON COLUMN tpdm.StaffEducationOrganizationAssignmentAssociationExtension.
 COMMENT ON TABLE tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck IS 'Staff background check history and disposition.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.BackgroundCheckTypeDescriptorId IS 'The type of background check (e.g., online, criminal, employment).';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.EducationOrganizationId IS 'The identifier assigned to an education organization.';
-COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract; for example:
-        Probationary
-        Contractual
-        Substitute/temporary
-        Tenured or permanent
-        Volunteer/no contract
-        ...';
+COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.HireDate IS 'The month, day, and year on which an individual was hired for a position.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.StaffUSI IS 'A unique alphanumeric code assigned to a staff.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackgroundCheck.BackgroundCheckRequestedDate IS 'The date the background check was requested.';
@@ -1547,13 +1541,7 @@ COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationBackground
 -- Extended Properties [tpdm].[StaffEducationOrganizationEmploymentAssociationExtension] --
 COMMENT ON TABLE tpdm.StaffEducationOrganizationEmploymentAssociationExtension IS '';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.EducationOrganizationId IS 'The identifier assigned to an education organization.';
-COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract; for example:
-        Probationary
-        Contractual
-        Substitute/temporary
-        Tenured or permanent
-        Volunteer/no contract
-        ...';
+COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.HireDate IS 'The month, day, and year on which an individual was hired for a position.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.StaffUSI IS 'A unique alphanumeric code assigned to a staff.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.ProbationCompleteDate IS 'The date the probation period ended or is scheduled to end.';
@@ -1564,13 +1552,7 @@ COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationExtension.
 -- Extended Properties [tpdm].[StaffEducationOrganizationEmploymentAssociationSalary] --
 COMMENT ON TABLE tpdm.StaffEducationOrganizationEmploymentAssociationSalary IS 'Information regarding the salary of a staff member.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.EducationOrganizationId IS 'The identifier assigned to an education organization.';
-COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract; for example:
-        Probationary
-        Contractual
-        Substitute/temporary
-        Tenured or permanent
-        Volunteer/no contract
-        ...';
+COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.HireDate IS 'The month, day, and year on which an individual was hired for a position.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.StaffUSI IS 'A unique alphanumeric code assigned to a staff.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.SalaryMinRange IS 'The minimum salary range for a staff.';
@@ -1582,13 +1564,7 @@ COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSalary.Sal
 COMMENT ON TABLE tpdm.StaffEducationOrganizationEmploymentAssociationSeniority IS 'Entries of job experience contributing to computations of seniority.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.CredentialFieldDescriptorId IS 'The field of the credential being applied.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.EducationOrganizationId IS 'The identifier assigned to an education organization.';
-COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract; for example:
-        Probationary
-        Contractual
-        Substitute/temporary
-        Tenured or permanent
-        Volunteer/no contract
-        ...';
+COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.EmploymentStatusDescriptorId IS 'Reflects the type of employment or contract.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.HireDate IS 'The month, day, and year on which an individual was hired for a position.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.NameOfInstitution IS 'The name of the education organization worked.';
 COMMENT ON COLUMN tpdm.StaffEducationOrganizationEmploymentAssociationSeniority.StaffUSI IS 'A unique alphanumeric code assigned to a staff.';
@@ -1641,21 +1617,21 @@ COMMENT ON COLUMN tpdm.StateEducationAgencyExtension.FederalLocaleCodeDescriptor
 
 -- Extended Properties [tpdm].[StudentGradebookEntryExtension] --
 COMMENT ON TABLE tpdm.StudentGradebookEntryExtension IS '';
-COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.BeginDate IS 'Month, day, and year of the Student''s entry or assignment to the Section.';
+COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.BeginDate IS 'Month, day, and year of the student''s entry or assignment to the section.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.DateAssigned IS 'The date the assignment, homework, or assessment was assigned or executed.';
-COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.GradebookEntryTitle IS 'The name or title of the activity to be recorded in the GradebookEntry.';
+COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.GradebookEntryTitle IS 'The name or title of the activity to be recorded in the gradebook entry.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.LocalCourseCode IS 'The local code assigned by the School that identifies the course offering provided for the instruction of students.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.SchoolId IS 'The identifier assigned to a school.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.SchoolYear IS 'The identifier for the school year.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.SectionIdentifier IS 'The local identifier assigned to a section.';
-COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.SessionName IS 'The identifier for the calendar for the academic session (e.g., 2010/11, 2011 Summer).';
+COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.SessionName IS 'The identifier for the calendar for the academic session.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.StudentUSI IS 'A unique alphanumeric code assigned to a student.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.DateCompleted IS 'The date that the assignment was completed.';
 COMMENT ON COLUMN tpdm.StudentGradebookEntryExtension.AssignmentPassed IS 'Indication of whether the assignment was passed or not.';
 
 -- Extended Properties [tpdm].[SurveyResponseExtension] --
 COMMENT ON TABLE tpdm.SurveyResponseExtension IS '';
-COMMENT ON COLUMN tpdm.SurveyResponseExtension.Namespace IS 'Namespace for the Survey.';
+COMMENT ON COLUMN tpdm.SurveyResponseExtension.Namespace IS 'Namespace for the survey.';
 COMMENT ON COLUMN tpdm.SurveyResponseExtension.SurveyIdentifier IS 'The unique survey identifier from the survey tool.';
 COMMENT ON COLUMN tpdm.SurveyResponseExtension.SurveyResponseIdentifier IS 'The identifier of the survey typically from the survey application.';
 COMMENT ON COLUMN tpdm.SurveyResponseExtension.PersonId IS 'A unique alphanumeric code assigned to a person.';
@@ -1663,7 +1639,7 @@ COMMENT ON COLUMN tpdm.SurveyResponseExtension.SourceSystemDescriptorId IS 'This
 
 -- Extended Properties [tpdm].[SurveyResponsePersonTargetAssociation] --
 COMMENT ON TABLE tpdm.SurveyResponsePersonTargetAssociation IS 'The association provides information about the survey being taken and who the survey is about.';
-COMMENT ON COLUMN tpdm.SurveyResponsePersonTargetAssociation.Namespace IS 'Namespace for the Survey.';
+COMMENT ON COLUMN tpdm.SurveyResponsePersonTargetAssociation.Namespace IS 'Namespace for the survey.';
 COMMENT ON COLUMN tpdm.SurveyResponsePersonTargetAssociation.PersonId IS 'A unique alphanumeric code assigned to a person.';
 COMMENT ON COLUMN tpdm.SurveyResponsePersonTargetAssociation.SourceSystemDescriptorId IS 'This descriptor defines the originating record source system for the person.';
 COMMENT ON COLUMN tpdm.SurveyResponsePersonTargetAssociation.SurveyIdentifier IS 'The unique survey identifier from the survey tool.';
@@ -1677,7 +1653,7 @@ COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.EvaluationElementTitle IS 
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.EvaluationObjectiveTitle IS 'The name or title of the evaluation Objective.';
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.EvaluationPeriodDescriptorId IS 'The period for the evaluation.';
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.EvaluationTitle IS 'The name or title of the evaluation.';
-COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.Namespace IS 'Namespace for the Survey.';
+COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.Namespace IS 'Namespace for the survey.';
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.PerformanceEvaluationTitle IS 'An assigned unique identifier for the performance evaluation.';
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.PerformanceEvaluationTypeDescriptorId IS 'The type of performance evaluation conducted.';
 COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.PersonId IS 'A unique alphanumeric code assigned to a person.';
@@ -1690,7 +1666,7 @@ COMMENT ON COLUMN tpdm.SurveySectionAggregateResponse.ScoreValue IS 'The score v
 
 -- Extended Properties [tpdm].[SurveySectionExtension] --
 COMMENT ON TABLE tpdm.SurveySectionExtension IS '';
-COMMENT ON COLUMN tpdm.SurveySectionExtension.Namespace IS 'Namespace for the Survey.';
+COMMENT ON COLUMN tpdm.SurveySectionExtension.Namespace IS 'Namespace for the survey.';
 COMMENT ON COLUMN tpdm.SurveySectionExtension.SurveyIdentifier IS 'The unique survey identifier from the survey tool.';
 COMMENT ON COLUMN tpdm.SurveySectionExtension.SurveySectionTitle IS 'The title or label for the survey section.';
 COMMENT ON COLUMN tpdm.SurveySectionExtension.PerformanceEvaluationTitle IS 'An assigned unique identifier for the performance evaluation.';
@@ -1705,7 +1681,7 @@ COMMENT ON COLUMN tpdm.SurveySectionExtension.EvaluationElementTitle IS 'The nam
 
 -- Extended Properties [tpdm].[SurveySectionResponsePersonTargetAssociation] --
 COMMENT ON TABLE tpdm.SurveySectionResponsePersonTargetAssociation IS 'This association provides information about the survey section and the person the survey section is about.';
-COMMENT ON COLUMN tpdm.SurveySectionResponsePersonTargetAssociation.Namespace IS 'Namespace for the Survey.';
+COMMENT ON COLUMN tpdm.SurveySectionResponsePersonTargetAssociation.Namespace IS 'Namespace for the survey.';
 COMMENT ON COLUMN tpdm.SurveySectionResponsePersonTargetAssociation.PersonId IS 'A unique alphanumeric code assigned to a person.';
 COMMENT ON COLUMN tpdm.SurveySectionResponsePersonTargetAssociation.SourceSystemDescriptorId IS 'This descriptor defines the originating record source system for the person.';
 COMMENT ON COLUMN tpdm.SurveySectionResponsePersonTargetAssociation.SurveyIdentifier IS 'The unique survey identifier from the survey tool.';
