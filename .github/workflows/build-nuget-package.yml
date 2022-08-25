@@ -72,7 +72,21 @@ jobs:
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
-          initdev -NoRebuild -NoDeploy #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+          $params = @{
+              InstallType   = "Sandbox"
+              OdsTokens     = @()
+              Engine        = "SqlServer"
+              NoCodeGen     = $false
+              NoRebuild     = $false
+              NoDeploy      = $false
+              RunPester     = $false
+              RunDotnetTest = $false
+              RunPostman    = $false
+              RunSmokeTest  = $false
+              UsePlugins    = $false
+              Settings      = @{ }
+          }
+          Initialize-DevelopmentEnvironment @params #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
