@@ -69,6 +69,8 @@ jobs:
 
       - name: Run CodeGen
         run: |
+          rm -f ./Plugin/tpdm.ps1
+          rm -rf ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.Core.1.1.0.6.0.38
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
