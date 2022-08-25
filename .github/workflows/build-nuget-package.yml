@@ -69,11 +69,11 @@ jobs:
 
       - name: Run CodeGen
         run: |
-          rm -Force ./Plugin/tpdm.ps1
-          rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
+          rm -Force ../Plugin/tpdm.ps1
+          rm -Recurse -Force ../Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
-          ./Initialize-PowershellForDevelopment.ps1
+          ../Initialize-PowershellForDevelopment.ps1
           $params = @{
               InstallType   = "Sandbox"
               OdsTokens     = @()
@@ -91,7 +91,7 @@ jobs:
           #Write-FlatHashtable $params
           #Initialize-DevelopmentEnvironment @params 
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
-        working-directory: Ed-Fi-ODS-Implementation
+        working-directory: Ed-Fi-ODS-Implementation/Application
         
       - name: Build
         run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
