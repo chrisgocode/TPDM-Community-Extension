@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
 
 env:
-  version_suite: 3
-  version_major: 5
-  version_minor: 3
+  version_suite: 6
+  version_major: 6
+  version_minor: 0
   version_patch: ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
   tpdm_version: 1.1.0
 jobs:  
@@ -28,13 +28,13 @@ jobs:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          ref: ${{ env.version_informational }}
+          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          ref: ${{ env.version_informational }}
+          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
