@@ -78,7 +78,7 @@ jobs:
               Engine        = "SqlServer"
               NoCodeGen     = $false
               NoRebuild     = $false
-              NoDeploy      = $false
+              NoDeploy      = $true
               RunPester     = $false
               RunDotnetTest = $false
               RunPostman    = $false
@@ -86,6 +86,7 @@ jobs:
               UsePlugins    = $false
               Settings      = @{ }
           }
+          Write-FlatHashtable $params
           Initialize-DevelopmentEnvironment @params #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
