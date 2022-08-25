@@ -70,7 +70,7 @@ jobs:
       - name: Run CodeGen
         run: |
           rm -Force ./Plugin/tpdm.ps1
-          rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.Core.1.1.0.6.0.38
+          rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
