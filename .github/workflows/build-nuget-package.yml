@@ -72,7 +72,7 @@ jobs:
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
-          initdev #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+          initdev -UsePlugins false -NoRebuild true -NoDeploy true  #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
