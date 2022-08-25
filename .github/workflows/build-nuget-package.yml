@@ -41,8 +41,8 @@ jobs:
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-        with:
-          path: Ed-Fi-Extensions
+        #with:
+        #  path: Ed-Fi-Extensions
           
       #- name: Setup DotNet
       #  uses: actions/setup-dotnet@v1
@@ -58,7 +58,7 @@ jobs:
           -replace '(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)','${{ env.tpdm_version }}' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
-        working-directory: Ed-Fi-Extensions
+        #working-directory: Ed-Fi-Extensions
       
       - name: Restore NuGet packages
         run: |
@@ -90,12 +90,12 @@ jobs:
           }
           #Write-FlatHashtable $params
           #Initialize-DevelopmentEnvironment @params 
-          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
-        working-directory: Ed-Fi-ODS-Implementation/Application
+          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM
+        working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
         run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
-        working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+        working-directory: ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM
 
       - name: Pack
         run: | 
@@ -110,7 +110,7 @@ jobs:
           -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" `
           -NoPackageAnalysis -NoDefaultExcludes
-        working-directory: ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+        working-directory: ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM
         
       - name: Upload artifact
         uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571
