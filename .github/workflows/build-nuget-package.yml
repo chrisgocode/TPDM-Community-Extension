@@ -86,8 +86,9 @@ jobs:
               UsePlugins    = $false
               Settings      = @{ }
           }
-          Write-FlatHashtable $params
-          Initialize-DevelopmentEnvironment @params #Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
+          #Write-FlatHashtable $params
+          #Initialize-DevelopmentEnvironment @params 
+          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
       - name: Build
