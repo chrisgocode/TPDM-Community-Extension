@@ -63,10 +63,6 @@ jobs:
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: TPDM-Community-Extension
       
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 15
-  
       - name: Restore NuGet packages
         run: |
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Common/EdFi.Ods.Common.csproj
@@ -76,8 +72,8 @@ jobs:
 
       - name: Run CodeGen
         run: |
-          rm -Force ../Plugin/tpdm.ps1
-          rm -Recurse -Force ../Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
+          rm -Force ./Plugin/tpdm.ps1
+          rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ../Initialize-PowershellForDevelopment.ps1
