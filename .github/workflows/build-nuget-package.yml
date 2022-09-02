@@ -76,7 +76,7 @@ jobs:
           rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
-          ../Initialize-PowershellForDevelopment.ps1
+          ./Initialize-PowershellForDevelopment.ps1
           $params = @{
               InstallType   = "Sandbox"
               OdsTokens     = @()
