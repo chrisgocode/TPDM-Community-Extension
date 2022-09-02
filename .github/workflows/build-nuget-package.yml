@@ -45,12 +45,12 @@ jobs:
           workflow: build-model.yml
           repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
           path: TPDM-Community-Model
-          skip_unpack: true
       
-      - name: Unpack TPDM-Community-Model Artifact
+      - name: Move Artifact files to extension
         working-directory: TPDM-Community-Model
         run: |
-          Expand-Archive .\*.zip -DestinationPath ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM/
+          cd *
+          Move-Item .\Artifacts\ ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM/
           
       
       - name: Replace package name
