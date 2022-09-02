@@ -52,7 +52,6 @@ jobs:
           cd *
           Move-Item .\Artifacts\ ${{ github.workspace }}/Extensions/EdFi.Ods.Extensions.TPDM/
           
-      
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
@@ -62,6 +61,11 @@ jobs:
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         #working-directory: Ed-Fi-Extensions
       
+      - uses: actions/checkout@v2
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 15
+  
       - name: Restore NuGet packages
         run: |
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Common/EdFi.Ods.Common.csproj
