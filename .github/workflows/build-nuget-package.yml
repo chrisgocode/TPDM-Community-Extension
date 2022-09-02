@@ -21,10 +21,7 @@ jobs:
         run: |
           echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
           echo "version_core=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $env:GITHUB_ENV
-        #choco install sql-server-2019
-        #sc query MSSQLSERVER
-        #sqlcmd -S . -E -Q "SELECT @@VERSION;"
-          
+
       - name: Git long filename support
         run: git config --system core.longpaths true
         
@@ -45,7 +42,7 @@ jobs:
       - name: Download TPDM-Community artifact
         uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
         with:
-          workflow: build-metaEd.yml
+          workflow: build-model.yml
           path: Ed-Fi-ODS-Implementation/Extensions/EdFi.Ods.Extensions.TPDM/
           repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
       
