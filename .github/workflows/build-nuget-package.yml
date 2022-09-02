@@ -41,15 +41,13 @@ jobs:
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-        #with:
-        #  path: Ed-Fi-Extensions
-          
-      #- name: Setup DotNet
-      #  uses: actions/setup-dotnet@v1
-      #  with:
-      #    dotnet-version: '3.1.x'
-      
-      #- uses: NuGet/setup-nuget@v1.0.5
+
+      - name: Download TPDM-Community artifact
+        uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
+        with:
+          workflow: build-metaEd.yml
+          path: Ed-Fi-ODS-Implementation/Extensions/EdFi.Ods.Extensions.TPDM/
+          repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
       
       - name: Replace package name
         run: |
