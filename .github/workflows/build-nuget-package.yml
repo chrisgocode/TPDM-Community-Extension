@@ -111,7 +111,7 @@ jobs:
           -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
           -Properties id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
           -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
-          -Properties "description=EdFi.Ods.Extensions.TPDM.Community testing" `
+          -Properties "description=EdFi.Ods.Extensions.TPDM.Community" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
         
