@@ -58,6 +58,7 @@ jobs:
       - name: Move Artifact files to extension
         working-directory: TPDM-Community-Model
         run: |
+          Remove-Item -Recurse ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/*
           cd *
           Move-Item .\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/
           
