@@ -5,7 +5,7 @@ on:
     branches:
       - main
   push:
-      
+
 env:
   version_suite: 6
   version_major: 6
@@ -36,18 +36,19 @@ jobs:
         run: |
           echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
           echo "version_core=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $env:GITHUB_ENV
-          
-      - name: Support longpaths
+      - name: Git long filename support
         run: git config --system core.longpaths true
-    
+        
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
+          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
+          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
@@ -60,7 +61,7 @@ jobs:
           workflow: build-model.yml
           repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
           path: TPDM-Community-Model
-    
+      
       - name: Move Artifact files to extension
         working-directory: TPDM-Community-Model
         run: |
@@ -107,7 +108,7 @@ jobs:
           #Initialize-DevelopmentEnvironment @params 
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
-
+        
       - name: Build
         run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
