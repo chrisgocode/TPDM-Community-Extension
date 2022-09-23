@@ -27,11 +27,6 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
-        with:
-          languages: 'csharp'
-          
       - name: Set env variables 
         run: |
           echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
@@ -42,13 +37,11 @@ jobs:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          #ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
@@ -109,9 +102,14 @@ jobs:
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
+        with:
+          languages: 'csharp'
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
+        
       - name: Build
         run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
-        
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
