@@ -1,0 +1,116 @@
+name: CodeQL Security Scan Pull request 
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+      
+env:
+  version_suite: 6
+  version_major: 6
+  version_minor: 0
+  version_patch: ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
+  tpdm_version: 1.1.0
+
+jobs:
+  analyze:
+    name: Analyze Code
+    runs-on: windows-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
+        with:
+          languages: 'csharp'
+          
+      - name: Set env variables 
+        run: |
+          echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
+          echo "version_core=${{ format('{0}.{1}.{2}', env.version_major, env.version_minor , env.version_patch) }}" >> $env:GITHUB_ENV
+          
+      - name: Support longpaths
+        run: git config --system core.longpaths true
+    
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
+          path: Ed-Fi-ODS
+
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
+          path: Ed-Fi-ODS-Implementation
+
+      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          path: TPDM-Community-Extension
+
+      - name: Download TPDM-Community-Model Artifact
+        uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
+        with:
+          workflow: build-model.yml
+          repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
+          path: TPDM-Community-Model
+    
+      - name: Move Artifact files to extension
+        working-directory: TPDM-Community-Model
+        run: |
+          cd *
+          Move-Item .\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/
+          
+      - name: Replace package name
+        run: |
+          (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
+          -replace '(?<=<id>)(.*?)(EdFi.Ods.Extensions.TPDM)(?=\b.*</id>)', 'EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}' `
+          -replace '(?<=<version>)(.*?)(1.0.0)(?=\b.*</version>)','${{ env.tpdm_version }}' |
+          Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
+          get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
+        working-directory: TPDM-Community-Extension
+      
+      - name: Restore NuGet packages
+        run: |
+          dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Common/EdFi.Ods.Common.csproj
+          dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Api/EdFi.Ods.Api.csproj
+          dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Standard/EdFi.Ods.Standard.csproj
+          dotnet restore TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj
+      - name: Run CodeGen
+        run: |
+          rm -Force ./Plugin/tpdm.ps1
+          rm -Recurse -Force ./Plugin/EdFi.Suite3.Ods.Extensions.TPDM.*
+          (Get-ChildItem -File .).FullName
+          $ErrorActionPreference = 'Stop'
+          ./Initialize-PowershellForDevelopment.ps1
+          $params = @{
+              InstallType   = "Sandbox"
+              OdsTokens     = @()
+              Engine        = "SqlServer"
+              NoCodeGen     = $false
+              NoRebuild     = $false
+              NoDeploy      = $true
+              RunPester     = $false
+              RunDotnetTest = $false
+              RunPostman    = $false
+              RunSmokeTest  = $false
+              UsePlugins    = $false
+              Settings      = @{ }
+          }
+          #Write-FlatHashtable $params
+          #Initialize-DevelopmentEnvironment @params 
+          Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
+        working-directory: Ed-Fi-ODS-Implementation
+
+      - name: Build
+        run: dotnet build --configuration release --version-suffix ${{ env.version_core }} --no-restore
+        working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
+        
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@1fae5bf71b0ecdc7d0a2ef0d0c28409d99693966  # v2.9.2
