@@ -50,7 +50,6 @@ jobs:
             echo "version_informational=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV
             echo ("version_core=${{ format('{0}.{1}', github.event.inputs.version_major, github.event.inputs.version_minor) }}." + "$version_patch") >> $env:GITHUB_ENV
             echo "standard_version=${{ github.event.inputs.standard_version }}" >> $env:GITHUB_ENV
-            echo "tpdm_package_version=${{ github.event.inputs.tpdm_package_version }}" >> $env:GITHUB_ENV
           } else {
             echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
             echo ("version_core=${{ format('{0}.{1}', env.version_major, env.version_minor) }}." + "$version_patch") >> $env:GITHUB_ENV
@@ -68,11 +67,13 @@ jobs:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
