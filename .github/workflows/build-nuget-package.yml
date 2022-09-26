@@ -49,13 +49,13 @@ jobs:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          #ref: ${{ env.version_informational }}
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          #ref: ${{ env.version_informational }}
+          ref: ${{ env.version_informational }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
