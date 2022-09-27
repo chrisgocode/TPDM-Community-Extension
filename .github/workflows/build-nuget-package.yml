@@ -19,11 +19,11 @@ on:
       Ed-Fi-ODS-ref:
         type: string
         required: false
-        description: "If supplied overrides the version_major and version_minor values and checks out the specified branch/tag of the Ed-Fi-ODS repo"
+        description: "Ed-Fi-ODS-ref: checks out the specified branch/tag of the Ed-Fi-ODS repo (ignores versions)"
       Ed-Fi-ODS-Implementation-ref:
         type: string
         required: false
-        description: "If supplied overrides the version_major and version_minor values and checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo"
+        description: "Ed-Fi-ODS-Implementation-ref: checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo (ignores versions)"
 
 env:
   version_suite: 3
@@ -43,10 +43,10 @@ jobs:
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
             echo "ods_ref=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV
             echo "ods_ref_implementation=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV        
-            if ("${{ github.event.inputs.Ed-Fi-ODS-ref  }}" -eq "") {
+            if ("${{ github.event.inputs.Ed-Fi-ODS-ref  }}" -ne "") {
               echo "ods_ref=${{ github.event.inputs.Ed-Fi-ODS-ref }}" >> $env:GITHUB_ENV
             }
-            if ("${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref  }}" -eq "") {
+            if ("${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref  }}" -ne "") {
               echo "ods_ref_implementation=${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref }}" >> $env:GITHUB_ENV
             }
             echo ("version_core=${{ format('{0}.{1}', github.event.inputs.version_major, github.event.inputs.version_minor) }}." + "$version_patch") >> $env:GITHUB_ENV
@@ -126,12 +126,12 @@ jobs:
           nuget pack EdFi.Ods.Extensions.TPDM.nuspec `
           -OutputDirectory ${{ github.workspace }}\NugetPackages `
           -Version ${{ env.version_core }} `
-          -Properties configuration=release `
+          -Properties "configuration=release" `
           -Properties "authors=Ed-Fi Alliance" `
           -Properties "owners=Ed-Fi Alliance" `
           -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
-          -Properties id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
-          -Properties title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }} `
+          -Properties "id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}" `
+          -Properties "title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}" `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
