@@ -114,22 +114,6 @@ jobs:
           (Get-ChildItem -File .).FullName
           $ErrorActionPreference = 'Stop'
           ./Initialize-PowershellForDevelopment.ps1
-          $params = @{
-              InstallType   = "Sandbox"
-              OdsTokens     = @()
-              Engine        = "SqlServer"
-              NoCodeGen     = $false
-              NoRebuild     = $false
-              NoDeploy      = $true
-              RunPester     = $false
-              RunDotnetTest = $false
-              RunPostman    = $false
-              RunSmokeTest  = $false
-              UsePlugins    = $false
-              Settings      = @{ }
-          }
-          #Write-FlatHashtable $params
-          #Initialize-DevelopmentEnvironment @params 
           Invoke-CodeGen -Engine SQLServer  -ExtensionPaths  ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
         working-directory: Ed-Fi-ODS-Implementation
         
@@ -153,7 +137,7 @@ jobs:
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
         
       - name: Upload artifact
-        uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571
+        uses: actions/upload-artifact@latest
         with:
           name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
           path: ${{ github.workspace }}/NugetPackages/EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
