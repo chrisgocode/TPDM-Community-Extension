@@ -16,6 +16,14 @@ on:
       standard_version:
         type: string
         required: true
+      Ed-Fi-ODS-ref:
+        type: string
+        required: false
+        description: "If supplied overrides the version_major and version_minor values and checks out the specified branch/tag of the Ed-Fi-ODS repo"
+      Ed-Fi-ODS-Implementation-ref:
+        type: string
+        required: false
+        description: "If supplied overrides the version_major and version_minor values and checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo"
 
 env:
   version_suite: 3
@@ -33,12 +41,20 @@ jobs:
         run: |
           $version_patch = ${{ format('{0}{1}', github.run_number , github.run_attempt) }}
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
-            echo "version_informational=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV
+            echo "ods_ref=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV
+            echo "ods_ref_implementation=${{ format('v{0}.{1}', github.event.inputs.version_major , github.event.inputs.version_minor ) }}" >> $env:GITHUB_ENV        
+            if ("${{ github.event.inputs.Ed-Fi-ODS-ref  }}" -eq "") {
+              echo "ods_ref=${{ github.event.inputs.Ed-Fi-ODS-ref }}" >> $env:GITHUB_ENV
+            }
+            if ("${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref  }}" -eq "") {
+              echo "ods_ref_implementation=${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref }}" >> $env:GITHUB_ENV
+            }
             echo ("version_core=${{ format('{0}.{1}', github.event.inputs.version_major, github.event.inputs.version_minor) }}." + "$version_patch") >> $env:GITHUB_ENV
             echo "standard_version=${{ github.event.inputs.standard_version }}" >> $env:GITHUB_ENV
             echo "tpdm_package_version=${{ github.event.inputs.tpdm_package_version }}" >> $env:GITHUB_ENV
           } else {
-            echo "version_informational=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
+            echo "ods_ref=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
+            echo "ods_ref_implementation=${{ format('v{0}.{1}', env.version_major , env.version_minor ) }}" >> $env:GITHUB_ENV
             echo ("version_core=${{ format('{0}.{1}', env.version_major, env.version_minor) }}." + "$version_patch") >> $env:GITHUB_ENV
           }
           echo "temp=${{ github.workspace }}\temp" >> $env:GITHUB_ENV
@@ -49,13 +65,13 @@ jobs:
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
-          ref: ${{ env.version_informational }}
+          ref: ${{ env.ods_ref }}
           path: Ed-Fi-ODS
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          ref: ${{ env.version_informational }}
+          ref: ${{ env.ods_ref_implementation }}
           path: Ed-Fi-ODS-Implementation
 
       - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
@@ -140,4 +156,4 @@ jobs:
         uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571
         with:
           name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
-          path: NugetPackages\EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
+          path: ${{ github.workspace }}/NugetPackages/EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.${{ env.version_core }}.nupkg
