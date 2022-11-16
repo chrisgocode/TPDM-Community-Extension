@@ -55,7 +55,7 @@ jobs:
             echo "ODS_version=${{ github.event.inputs.ODS_version }}" >> $env:GITHUB_ENV
           }
           echo ("version_core=${{ format('v{0}', env.ODS_version )}}." + "$version_patch") >> $env:GITHUB_ENV
-          echo "tpdm_package_version=${{ github.event.inputs.tpdm_package_version }}" >> $env:GITHUB_ENV
+
 
       - name: Git long filename support
         run: git config --system core.longpaths true
