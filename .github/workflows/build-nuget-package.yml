@@ -7,15 +7,15 @@ on:
       ODS_version:
         type: string
         required: false
-        description: "ODS_version: Ed-Fi ODS/API version"
+        description: "ODS_version: Ed-Fi ODS/API version. Default: 6.1"
       Ed-Fi-ODS-ref:
         type: string
         required: false
-        description: "Ed-Fi-ODS-ref: checks out the specified branch/tag of the Ed-Fi-ODS repo (ignores versions)"
+        description: "Ed-Fi-ODS-ref: checks out the specified branch/tag of the Ed-Fi-ODS repo (ignores versions). Default branch if not specified."
       Ed-Fi-ODS-Implementation-ref:
         type: string
         required: false
-        description: "Ed-Fi-ODS-Implementation-ref: checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo (ignores versions)"
+        description: "Ed-Fi-ODS-Implementation-ref: checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo (ignores versions). Default branch if not specified."
 
 env:
   version_suite: "3"
