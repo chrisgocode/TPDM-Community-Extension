@@ -38,7 +38,10 @@ jobs:
           if ("${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref  }}" -ne "") {
             echo "ods_ref_implementation=${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref }}" >> $env:GITHUB_ENV
           }
-          echo ("version_core=${{ format('v{0}', github.event.inputs.ODS_version )}}." + "$version_patch") >> $env:GITHUB_ENV
+          if ("${{ github.event.inputs.ODS_version  }}" -ne "") {
+            echo "ODS_version=${{ github.event.inputs.ODS_version }}" >> $env:GITHUB_ENV
+          }
+          echo ("version_core=${{ format('v{0}', env.ODS_version )}}." + "$version_patch") >> $env:GITHUB_ENV
           echo "tpdm_package_version=${{ github.event.inputs.tpdm_package_version }}" >> $env:GITHUB_ENV
 
 
