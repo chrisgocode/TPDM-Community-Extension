@@ -89,7 +89,7 @@ jobs:
         working-directory: TPDM-Community-Model
         run: |
           cd *
-          Move-Item .\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/
+          Move-Item .\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/ -force
 
       - name: Replace package name
         run: |
