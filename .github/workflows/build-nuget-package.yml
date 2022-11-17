@@ -1,4 +1,4 @@
-name: build Nuget package
+name: Build TPDM extension package
 
 on:
   push:
