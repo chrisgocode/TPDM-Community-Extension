@@ -17,7 +17,9 @@ BEGIN
         @createActionId AS INT,
         @readActionId AS INT,
         @updateActionId AS INT,
-        @deleteActionId AS INT
+        @deleteActionId AS INT,
+        @resourceClaimActionId AS INT,
+        @claimSetResourceClaimActionId AS INT
 
     DECLARE @claimIdStack AS TABLE (Id INT IDENTITY, ResourceClaimId INT)
 
@@ -97,9 +99,23 @@ BEGIN
     END
 
     PRINT 'Deleting existing actions for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ') on resource claim ''' + @claimName + '''.'
-    DELETE FROM dbo.ClaimSetResourceClaims
-    WHERE ClaimSet_ClaimSetId = @claimSetId AND ResourceClaim_ResourceClaimId = @claimId
 
+    IF EXISTS (SELECT 1 FROM dbo.ClaimSetResourceClaimActions WHERE ClaimSetId = @claimSetId AND ResourceClaimId = @claimId)
+    BEGIN
+
+    SELECT @claimSetResourceClaimActionId = CSRCAAS.ClaimSetResourceClaimActionId
+    FROM dbo.ClaimSetResourceClaimActionAuthorizationStrategyOverrides  CSRCAAS
+    INNER JOIN dbo.ClaimSetResourceClaimActions  CSRCA   ON CSRCAAS.ClaimSetResourceClaimActionId = CSRCA.ClaimSetResourceClaimActionId
+    INNER JOIN dbo.ResourceClaims  RC   ON RC.ResourceClaimId = CSRCA.ResourceClaimId
+    INNER JOIN dbo.ClaimSets CS   ON CS.ClaimSetId = CSRCA.ClaimSetId
+    WHERE CSRCA.ClaimSetId = @claimSetId AND CSRCA.ResourceClaimId = @claimId
+
+    DELETE FROM dbo.ClaimSetResourceClaimActionAuthorizationStrategyOverrides
+    WHERE ClaimSetResourceClaimActionId =@claimSetResourceClaimActionId
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ClaimSetId = @claimSetId AND ResourceClaimId = @claimId
+
+    END
 
     -- Claim set-specific Create authorization
     SET @authorizationStrategyId = NULL
@@ -110,8 +126,8 @@ BEGIN
     ELSE
         PRINT 'Creating ''Create'' action for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ', actionId = ' + CONVERT(nvarchar, @CreateActionId) + ', authorizationStrategyId = ' + CONVERT(nvarchar, @authorizationStrategyId) + ').'
 
-    INSERT INTO dbo.ClaimSetResourceClaims(ResourceClaim_ResourceClaimId, ClaimSet_ClaimSetId, Action_ActionId, AuthorizationStrategyOverride_AuthorizationStrategyId)
-    VALUES (@claimId, @claimSetId, @CreateActionId, @authorizationStrategyId) -- Create
+    INSERT INTO dbo.ClaimSetResourceClaimActions(ResourceClaimId, ClaimSetId, ActionId)
+    VALUES (@claimId, @claimSetId, @CreateActionId) -- Create
 
     -- Claim set-specific Read authorization
     SET @authorizationStrategyId = NULL
@@ -122,8 +138,8 @@ BEGIN
     ELSE
         PRINT 'Creating ''Read'' action for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ', actionId = ' + CONVERT(nvarchar, @ReadActionId) + ', authorizationStrategyId = ' + CONVERT(nvarchar, @authorizationStrategyId) + ').'
 
-    INSERT INTO dbo.ClaimSetResourceClaims(ResourceClaim_ResourceClaimId, ClaimSet_ClaimSetId, Action_ActionId, AuthorizationStrategyOverride_AuthorizationStrategyId)
-    VALUES (@claimId, @claimSetId, @ReadActionId, @authorizationStrategyId) -- Read
+    INSERT INTO dbo.ClaimSetResourceClaimActions(ResourceClaimId, ClaimSetId, ActionId)
+    VALUES (@claimId, @claimSetId, @ReadActionId) -- Read
 
     -- Claim set-specific Update authorization
     SET @authorizationStrategyId = NULL
@@ -134,8 +150,8 @@ BEGIN
     ELSE
         PRINT 'Creating ''Update'' action for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ', actionId = ' + CONVERT(nvarchar, @UpdateActionId) + ', authorizationStrategyId = ' + CONVERT(nvarchar, @authorizationStrategyId) + ').'
 
-    INSERT INTO dbo.ClaimSetResourceClaims(ResourceClaim_ResourceClaimId, ClaimSet_ClaimSetId, Action_ActionId, AuthorizationStrategyOverride_AuthorizationStrategyId)
-    VALUES (@claimId, @claimSetId, @UpdateActionId, @authorizationStrategyId) -- Update
+    INSERT INTO dbo.ClaimSetResourceClaimActions(ResourceClaimId, ClaimSetId, ActionId)
+    VALUES (@claimId, @claimSetId, @UpdateActionId) -- Update
 
     -- Claim set-specific Delete authorization
     SET @authorizationStrategyId = NULL
@@ -146,8 +162,9 @@ BEGIN
     ELSE
         PRINT 'Creating ''Delete'' action for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ', actionId = ' + CONVERT(nvarchar, @DeleteActionId) + ', authorizationStrategyId = ' + CONVERT(nvarchar, @authorizationStrategyId) + ').'
 
-    INSERT INTO dbo.ClaimSetResourceClaims(ResourceClaim_ResourceClaimId, ClaimSet_ClaimSetId, Action_ActionId, AuthorizationStrategyOverride_AuthorizationStrategyId)
-    VALUES (@claimId, @claimSetId, @DeleteActionId, @authorizationStrategyId) -- Delete
+    INSERT INTO dbo.ClaimSetResourceClaimActions(ResourceClaimId, ClaimSetId, ActionId)
+    VALUES (@claimId, @claimSetId, @DeleteActionId) -- Delete
+
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
 
@@ -189,8 +206,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -205,8 +238,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -221,8 +261,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -237,8 +284,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -253,8 +307,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
@@ -682,8 +743,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -698,8 +775,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -714,8 +798,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -730,8 +821,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -746,8 +844,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
 
     -- Pop the stack
@@ -790,8 +895,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -806,8 +927,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -822,8 +950,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -838,8 +973,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -854,8 +996,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
@@ -1003,8 +1152,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -1019,8 +1184,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -1035,8 +1207,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -1051,8 +1230,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -1067,8 +1253,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
 
     -- Pop the stack
@@ -1111,8 +1304,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -1127,8 +1336,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -1143,8 +1359,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -1159,8 +1382,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -1175,8 +1405,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
@@ -1293,8 +1530,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -1309,8 +1562,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -1325,8 +1585,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -1341,8 +1608,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -1357,8 +1631,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
@@ -1576,8 +1857,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -1592,8 +1889,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -1608,8 +1912,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -1624,8 +1935,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -1640,8 +1958,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
 
     -- Pop the stack
@@ -1684,8 +2009,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -1700,8 +2041,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -1716,8 +2064,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -1732,8 +2087,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -1748,8 +2110,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Push claimId to the stack
     INSERT INTO @claimIdStack (ResourceClaimId) VALUES (@claimId)
@@ -2133,8 +2502,24 @@ BEGIN
 
     -- Setting default authorization metadata
     PRINT 'Deleting default action authorizations for resource claim ''' + @claimName + ''' (claimId=' + CONVERT(nvarchar, @claimId) + ').'
-    DELETE FROM dbo.ResourceClaimAuthorizationMetadatas
-    WHERE ResourceClaim_ResourceClaimId = @claimId
+
+    IF EXISTS (SELECT 1 FROM dbo.ResourceClaimActions WHERE ResourceClaimId = @claimId)
+
+    BEGIN
+
+    DELETE
+    FROM dbo.ResourceClaimActionAuthorizationStrategies
+    WHERE ResourceClaimActionAuthorizationStrategyId IN (
+        SELECT RCAAS.ResourceClaimActionAuthorizationStrategyId
+        FROM dbo.ResourceClaimActionAuthorizationStrategies  RCAAS
+        INNER JOIN dbo.ResourceClaimActions  RCA   ON RCA.ResourceClaimActionId = RCAAS.ResourceClaimActionId
+        WHERE RCA.ResourceClaimId = @claimId
+    );
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ResourceClaimId = @claimId;
+    DELETE FROM dbo.ResourceClaimActions   WHERE ResourceClaimId = @claimId;
+
+    END
 
     -- Default Create authorization
     SET @authorizationStrategyId = NULL
@@ -2149,8 +2534,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @CreateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @CreateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@CreateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Read authorization
     SET @authorizationStrategyId = NULL
@@ -2165,8 +2557,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @ReadActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @ReadActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@ReadActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Update authorization
     SET @authorizationStrategyId = NULL
@@ -2181,8 +2580,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @UpdateActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @UpdateActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@UpdateActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Default Delete authorization
     SET @authorizationStrategyId = NULL
@@ -2197,8 +2603,15 @@ BEGIN
         THROW 50000, @msg, 1
     END
 
-    INSERT INTO dbo.ResourceClaimAuthorizationMetadatas(ResourceClaim_ResourceClaimId, Action_ActionId, AuthorizationStrategy_AuthorizationStrategyId)
-    VALUES (@claimId, @DeleteActionId, @authorizationStrategyId)
+    INSERT INTO dbo.ResourceClaimActions(ResourceClaimId, ActionId)
+    VALUES (@claimId, @DeleteActionId)
+
+    SELECT @resourceClaimActionId = aca.ResourceClaimActionId
+    FROM    dbo.ResourceClaimActions aca
+    WHERE   aca.ResourceClaimId = @claimId AND ActionId =@DeleteActionId
+
+    INSERT INTO dbo.ResourceClaimActionAuthorizationStrategies(ResourceClaimActionId, AuthorizationStrategyId)
+    VALUES (@resourceClaimActionId, @authorizationStrategyId)
 
     -- Processing claim sets for http://ed-fi.org/ods/identity/claims/tpdm/educatorPreparationProgram
     ----------------------------------------------------------------------------------------------------------------------------
@@ -2222,9 +2635,23 @@ BEGIN
     END
 
     PRINT 'Deleting existing actions for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ') on resource claim ''' + @claimName + '''.'
-    DELETE FROM dbo.ClaimSetResourceClaims
-    WHERE ClaimSet_ClaimSetId = @claimSetId AND ResourceClaim_ResourceClaimId = @claimId
 
+    IF EXISTS (SELECT 1 FROM dbo.ClaimSetResourceClaimActions WHERE ClaimSetId = @claimSetId AND ResourceClaimId = @claimId)
+    BEGIN
+
+    SELECT @claimSetResourceClaimActionId = CSRCAAS.ClaimSetResourceClaimActionId
+    FROM dbo.ClaimSetResourceClaimActionAuthorizationStrategyOverrides  CSRCAAS
+    INNER JOIN dbo.ClaimSetResourceClaimActions  CSRCA   ON CSRCAAS.ClaimSetResourceClaimActionId = CSRCA.ClaimSetResourceClaimActionId
+    INNER JOIN dbo.ResourceClaims  RC   ON RC.ResourceClaimId = CSRCA.ResourceClaimId
+    INNER JOIN dbo.ClaimSets CS   ON CS.ClaimSetId = CSRCA.ClaimSetId
+    WHERE CSRCA.ClaimSetId = @claimSetId AND CSRCA.ResourceClaimId = @claimId
+
+    DELETE FROM dbo.ClaimSetResourceClaimActionAuthorizationStrategyOverrides
+    WHERE ClaimSetResourceClaimActionId =@claimSetResourceClaimActionId
+
+    DELETE FROM dbo.ClaimSetResourceClaimActions   WHERE ClaimSetId = @claimSetId AND ResourceClaimId = @claimId
+
+    END
 
     -- Claim set-specific Create authorization
     SET @authorizationStrategyId = NULL
@@ -2235,8 +2662,8 @@ BEGIN
     ELSE
         PRINT 'Creating ''Create'' action for claim set ''' + @claimSetName + ''' (claimSetId=' + CONVERT(nvarchar, @claimSetId) + ', actionId = ' + CONVERT(nvarchar, @CreateActionId) + ', authorizationStrategyId = ' + CONVERT(nvarchar, @authorizationStrategyId) + ').'
 
-    INSERT INTO dbo.ClaimSetResourceClaims(ResourceClaim_ResourceClaimId, ClaimSet_ClaimSetId, Action_ActionId, AuthorizationStrategyOverride_AuthorizationStrategyId)
-    VALUES (@claimId, @claimSetId, @CreateActionId, @authorizationStrategyId) -- Create
+    INSERT INTO dbo.ClaimSetResourceClaimActions(ResourceClaimId, ClaimSetId, ActionId)
+    VALUES (@claimId, @claimSetId, @CreateActionId) -- Create
 
     -- Pop the stack
     DELETE FROM @claimIdStack WHERE Id = (SELECT Max(Id) FROM @claimIdStack)
