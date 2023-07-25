@@ -92,6 +92,9 @@ jobs:
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Standard/EdFi.Ods.Standard.csproj
           dotnet restore TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Run CodeGen
         run: |
           rm -Force ./Plugin/tpdm.ps1
