@@ -16,11 +16,16 @@ on:
         type: string
         required: false
         description: "Ed-Fi-ODS-Implementation-ref: checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo (ignores versions). Default branch if not specified."
+      Data-Standard-Version:
+        type: string
+        required: false
+        description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.0"
 
 env:
   version_suite: "3"
   ODS_version: "7.0"
   tpdm_version: "1.2.0"
+  Data-Standard-Version: "5.0"
 
 jobs:
   ed-fi-repository-scanner:
@@ -40,6 +45,9 @@ jobs:
           }
           if ("${{ github.event.inputs.ODS_version  }}" -ne "") {
             echo "ODS_version=${{ github.event.inputs.ODS_version }}" >> $env:GITHUB_ENV
+          }
+          if ("${{ github.event.inputs.Data-Standard-Version  }}" -ne "") {
+            echo "ODS_version=${{ github.event.inputs.Data-Standard-Version }}" >> $env:GITHUB_ENV
           }
           echo ("version_core=${{ env.ODS_version }}." + "$version_patch") >> $env:GITHUB_ENV
 
@@ -124,5 +132,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@e448a9b857ee2131e752b06002bf0e093c65e571
         with:
-          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.ODS_version }}.nupkg
+          name: EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}.nupkg
           path: ${{ github.workspace }}/NugetPackages/*.nupkg
