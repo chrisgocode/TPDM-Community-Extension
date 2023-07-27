@@ -47,19 +47,19 @@ jobs:
       - name: Git long filename support
         run: git config --system core.longpaths true
 
-      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           ref: ${{ env.ods_ref }}
           path: Ed-Fi-ODS
 
-      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
         with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           ref: ${{ env.ods_ref_implementation }}
           path: Ed-Fi-ODS-Implementation
 
-      - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
         with:
           path: TPDM-Community-Extension
 
