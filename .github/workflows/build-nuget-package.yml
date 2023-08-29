@@ -24,8 +24,8 @@ env:
 
 jobs:
   ed-fi-repository-scanner:
-    uses: ed-fi-alliance-oss/ed-fi-actions/.github/workflows/repository-scanner.yml@latest
-
+    uses: ed-fi-alliance-oss/ed-fi-actions/.github/workflows/repository-scanner.yml@main
+    
   build:
     runs-on: windows-latest
     steps:
