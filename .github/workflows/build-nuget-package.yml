@@ -7,7 +7,7 @@ on:
       ODS_version:
         type: string
         required: false
-        description: "ODS_version: Ed-Fi ODS/API version. Default: 6.1"
+        description: "ODS_version: Ed-Fi ODS/API version. Default: 7.0"
       Ed-Fi-ODS-ref:
         type: string
         required: false
@@ -19,8 +19,8 @@ on:
 
 env:
   version_suite: "3"
-  ODS_version: "6.1"
-  tpdm_version: "1.1.0"
+  ODS_version: "7.0"
+  tpdm_version: "1.2.0"
 
 jobs:
   ed-fi-repository-scanner:
@@ -74,7 +74,7 @@ jobs:
         working-directory: TPDM-Community-Model
         run: |
           cd *
-          Move-Item .\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/ -force
+          Move-Item .\Versions\${{ env.tpdm_version }}\Standard\5.0.0\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/ -force
 
       - name: Replace package name
         run: |
