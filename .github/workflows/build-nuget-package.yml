@@ -50,8 +50,6 @@ jobs:
             echo "ODS_version=${{ github.event.inputs.Data-Standard-Version }}" >> $env:GITHUB_ENV
           }
           echo ("version_core=${{ env.ODS_version }}." + "$version_patch") >> $env:GITHUB_ENV
-
-
       - name: Git long filename support
         run: git config --system core.longpaths true
 
@@ -82,8 +80,7 @@ jobs:
         working-directory: TPDM-Community-Model
         run: |
           cd *
-          Move-Item .\Versions\${{ env.tpdm_version }}\Standard\5.0.0\Artifacts\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/ -force
-
+          Move-Item .\Versions\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/ -force
       - name: Replace package name
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
@@ -99,7 +96,6 @@ jobs:
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Api/EdFi.Ods.Api.csproj
           dotnet restore Ed-Fi-ODS/Application/EdFi.Ods.Standard/EdFi.Ods.Standard.csproj
           dotnet restore TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj
-
       - name: Run CodeGen
         run: |
           rm -Force ./Plugin/tpdm.ps1
