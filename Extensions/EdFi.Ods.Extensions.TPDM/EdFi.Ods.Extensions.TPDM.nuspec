@@ -11,8 +11,8 @@
     <releaseNotes></releaseNotes>
   </metadata>
   <files>
-    <file src="Artifacts/**/*.sql" target="."/>
-    <file src="Artifacts/**/*.json" target="."/>
+    <file src="Versions/$extensionversion$/Standard/$standardversion$/Artifacts/**/*.json" target="Artifacts/." />
+    <file src="Versions/$extensionversion$/Standard/$standardversion$/Artifacts/**/*.sql" target="Artifacts/." />
     <file src="assemblyMetadata.json" target="."/>
     <file src="bin\$configuration$\net6.0\EdFi.Ods.Extensions.TPDM.dll" target="."/>
   </files>
