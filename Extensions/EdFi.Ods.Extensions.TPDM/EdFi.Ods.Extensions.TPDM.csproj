@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <StandardVersion Condition="'$(StandardVersion)' == '' ">5.0.0</StandardVersion>
-    <ExtensionVersion Condition="'$(ExtensionVersion)' == '' ">1.1.0</ExtensionVersion>
+    <ExtensionVersion Condition="'$(ExtensionVersion)' == '' ">1.2.0</ExtensionVersion>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net6.0</TargetFrameworks>
