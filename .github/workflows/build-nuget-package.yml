@@ -85,7 +85,7 @@ jobs:
         run: |
           (Get-Content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec) `
           -replace '(<id>).*?(</id>)', '$1EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}$2' `
-          -replace '(<version>).*?(</version>)','$1${{ env.version_core }}$2' |
+          -replace '(<version>).*?(</version>)','${1}${{ env.version_core }}$2' |
           Out-File Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
           get-content Extensions\EdFi.Ods.Extensions.TPDM\EdFi.Ods.Extensions.TPDM.nuspec
         working-directory: TPDM-Community-Extension
