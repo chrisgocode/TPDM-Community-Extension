@@ -25,7 +25,7 @@ env:
   version_suite: "3"
   ODS_version: "7.0"
   tpdm_version: "1.2.0"
-  Data-Standard-Version: "5.0"
+  Data-Standard-Version: "5.0.0"
 
 jobs:
   ed-fi-repository-scanner:
@@ -116,11 +116,8 @@ jobs:
           -OutputDirectory ${{ github.workspace }}\NugetPackages `
           -Version ${{ env.version_core }} `
           -Properties "configuration=release" `
-          -Properties "authors=Ed-Fi Alliance" `
-          -Properties "owners=Ed-Fi Alliance" `
-          -Properties "copyright=Copyright ©Ed-Fi Alliance, LLC. 2020" `
-          -Properties "id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}" `
-          -Properties "title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}" `
+          -Properties "id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}" `
+          -Properties "title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}" `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
