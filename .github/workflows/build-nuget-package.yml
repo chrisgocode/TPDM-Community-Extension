@@ -121,7 +121,7 @@ jobs:
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community" `
           -Properties "extensionVersion=${{ env.tpdm_version }}" `
           -Properties "standardVersion=${{ env.Data-Standard-Version }}" `
-          -NoPackageAnalysis -NoDefaultExcludes
+          -NoPackageAnalysis -NoDefaultExcludes -Verbosity detailed
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
 
       - name: Upload artifact
