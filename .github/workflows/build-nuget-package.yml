@@ -119,6 +119,8 @@ jobs:
           -Properties "id=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}" `
           -Properties "title=EdFi.Suite${{ env.version_suite }}.Ods.Extensions.TPDM.Community.${{ env.tpdm_version }}.Standard.${{ env.Data-Standard-Version }}" `
           -Properties "description=EdFi.Ods.Extensions.TPDM.Community" `
+          -Properties "extensionVersion=${{ env.tpdm_version }}" `
+          -Properties "standardVersion=${{ env.Data-Standard-Version }}" `
           -NoPackageAnalysis -NoDefaultExcludes
         working-directory: ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM
 
