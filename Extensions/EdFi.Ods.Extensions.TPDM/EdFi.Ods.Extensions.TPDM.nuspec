@@ -14,8 +14,8 @@
   </metadata>
   <files>
     <file src="../../LICENSE" />
-    <file src="Versions/$extensionversion$/Standard/$standardversion$/Artifacts/**/*.json" target="Artifacts/." />
-    <file src="Versions/$extensionversion$/Standard/$standardversion$/Artifacts/**/*.sql" target="Artifacts/." />
+    <file src="/Artifacts/**/*.json" target="Artifacts/." />
+    <file src="/Artifacts/**/*.sql" target="Artifacts/." />
     <file src="bin\$Configuration$\net6.0\EdFi.Ods.Extensions.TPDM.dll" target="." />
   </files>
 </package>
