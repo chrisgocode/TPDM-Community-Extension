@@ -73,14 +73,14 @@ jobs:
    
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-       ref: ${{ env.ods_ref }}
+      ref: ${{ env.ods_ref }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
           
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-       ref: ${{ env.ods_ref_implementation }}
+      ref: ${{ env.ods_ref_implementation }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           path: Ed-Fi-ODS-Implementation/        
@@ -132,14 +132,14 @@ jobs:
        
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-       ref: ${{ env.ods_ref }}
+      ref: ${{ env.ods_ref }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
           
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-       ref: ${{ env.ods_ref_implementation }}
+      ref: ${{ env.ods_ref_implementation }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           path: Ed-Fi-ODS-Implementation/        
