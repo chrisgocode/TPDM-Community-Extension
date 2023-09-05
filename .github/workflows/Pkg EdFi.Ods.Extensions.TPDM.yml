@@ -116,7 +116,7 @@ jobs:
       working-directory: TPDM-Community-Model
       run: |
           cd *
-          cp -RT ./* ../TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/Versions/
+          cp -RT ./* ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/Versions/
           ls -aR
           
     - name: Is pull request branch exists in Ed-Fi-ODS-Implementation
