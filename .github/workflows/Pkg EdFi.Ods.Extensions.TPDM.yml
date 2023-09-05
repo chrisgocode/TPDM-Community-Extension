@@ -34,7 +34,7 @@ on:
         description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.0.0"
         
 env:
-  INFORMATIONAL_VERSION: ${{ env.INFORMATIONAL_VERSION }}
+  INFORMATIONAL_VERSION: "7.0"
   BUILD_INCREMENTER: "1"
   CONFIGURATION: "Release"
   HEAD_REF:  ${{ GITHUB.HEAD_REF }}
