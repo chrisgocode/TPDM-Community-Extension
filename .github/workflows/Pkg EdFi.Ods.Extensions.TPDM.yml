@@ -50,7 +50,7 @@ jobs:
       shell: pwsh
       run: |
         cp ./Ed-Fi-Alliance-Extensions/build.githubactions.ps1 ./
-        rm -r -fo ./Ed-Fi-Alliance-Extensions
+        rm -rf ./Ed-Fi-Alliance-Extensions
     
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
@@ -117,7 +117,7 @@ jobs:
       shell: pwsh
       run: |
         cp ./Ed-Fi-Alliance-Extensions/build.githubactions.ps1 ./
-        rm -r -fo ./Ed-Fi-Alliance-Extensions
+        rm -rf ./Ed-Fi-Alliance-Extensions
         
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
