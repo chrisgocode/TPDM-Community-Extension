@@ -43,7 +43,6 @@ jobs:
     - name: Checkout Ed-Fi-Extensions
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
-          repository: Ed-Fi-Alliance-OSS/Ed-Fi-Extensions
           path: Ed-Fi-Extensions/    
           
     - name: Copy build.githubactions.ps1 to Ed-Fi-Extensions
@@ -105,7 +104,6 @@ jobs:
     - name: Checkout TPDM-Community-Extension
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
-          repository: Ed-Fi-Exchange-OSS/TPDM-Community-Extension
           path: Ed-Fi-Extensions/
     
     - name: Checkout Alliance Ed-Fi-Extensions (for build.githubactions.ps1)
