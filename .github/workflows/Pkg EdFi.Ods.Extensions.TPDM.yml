@@ -16,7 +16,7 @@ on:
         description: 'distinct ID for Rebuild Database Templates workflow'
         required: false
         default: 'distinct_id'
-      ODS_version:
+      INFORMATIONAL_VERSION:
         type: string
         required: false
         description: "ODS_version: Ed-Fi ODS/API version. Default: 7.0"
@@ -34,7 +34,7 @@ on:
         description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.0.0"
         
 env:
-  INFORMATIONAL_VERSION: "7.0"
+  INFORMATIONAL_VERSION: ${{ env.INFORMATIONAL_VERSION }}
   BUILD_INCREMENTER: "1"
   CONFIGURATION: "Release"
   HEAD_REF:  ${{ GITHUB.HEAD_REF }}
@@ -59,8 +59,8 @@ jobs:
           if ("${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref  }}" -ne "") {
             echo "ods_ref_implementation=${{ github.event.inputs.Ed-Fi-ODS-Implementation-ref }}" >> $env:GITHUB_ENV
           }
-          if ("${{ github.event.inputs.ODS_version  }}" -ne "") {
-            echo "ODS_version=${{ github.event.inputs.ODS_version }}" >> $env:GITHUB_ENV
+          if ("${{ github.event.inputs.INFORMATIONAL_VERSION  }}" -ne "") {
+            echo "INFORMATIONAL_VERSION=${{ github.event.inputs.INFORMATIONAL_VERSION }}" >> $env:GITHUB_ENV
           }
           if ("${{ github.event.inputs.Data-Standard-Version  }}" -ne "") {
             echo "ODS_version=${{ github.event.inputs.Data-Standard-Version }}" >> $env:GITHUB_ENV
@@ -73,17 +73,17 @@ jobs:
    
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      ref: ${{ env.ods_ref }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
+          ref: ${{ env.ods_ref }}    
           
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      ref: ${{ env.ods_ref_implementation }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          path: Ed-Fi-ODS-Implementation/        
+          path: Ed-Fi-ODS-Implementation/
+          ref: ${{ env.ods_ref_implementation }}
           
     - name: Is pull request branch exists in Ed-Fi-ODS
       working-directory: ./Ed-Fi-Extensions/
@@ -132,17 +132,17 @@ jobs:
        
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      ref: ${{ env.ods_ref }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
+          ref: ${{ env.ods_ref }}
           
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      ref: ${{ env.ods_ref_implementation }}
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
-          path: Ed-Fi-ODS-Implementation/        
+          path: Ed-Fi-ODS-Implementation/
+          ref: ${{ env.ods_ref_implementation }}
           
     - name: Download TPDM-Community-Model Artifact
       uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
