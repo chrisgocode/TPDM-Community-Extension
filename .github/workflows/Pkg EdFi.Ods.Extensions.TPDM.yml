@@ -8,7 +8,7 @@ name: Pkg EdFi.Ods.Extensions.TPDM
 on:
   push:
     branches:
-      - main
+      - TPDMDEV-790
   
   workflow_dispatch:
     inputs:
@@ -28,7 +28,7 @@ on:
         type: string
         required: false
         description: "Ed-Fi-ODS-Implementation-ref: checks out the specified branch/tag of the Ed-Fi-ODS-Implementation repo (ignores versions). Default branch if not specified."
-       Data-Standard-Version:
+      Data-Standard-Version:
         type: string
         required: false
         description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.0.0"
