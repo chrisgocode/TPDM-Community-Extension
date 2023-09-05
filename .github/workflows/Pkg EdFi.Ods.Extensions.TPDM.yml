@@ -82,6 +82,7 @@ jobs:
         $output = .\build.githubactions.ps1 ExtensionVersions -ProjectFile "$env:GITHUB_WORKSPACE/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj"
         echo "ExtensionVersions=$output" >> $env:GITHUB_OUTPUT
         Write-host "ExtensionVersions is  $output"
+        cat "$env:GITHUB_WORKSPACE/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.csproj"
       shell: pwsh
   build:
     if: ${{ always() }}
