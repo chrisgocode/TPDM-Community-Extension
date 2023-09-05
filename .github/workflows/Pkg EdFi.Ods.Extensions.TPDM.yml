@@ -34,23 +34,11 @@ jobs:
       StandardVersions: ${{ steps.Set_StandardVersions.outputs.StandardVersions }}
       ExtensionVersions: ${{ steps.Set_ExtensionVersions.outputs.ExtensionVersions }}
     steps:
-    - name: Checkout Alliance Ed-Fi-Extensions (for build.githubactions.ps1)
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      with:
-          repository: Ed-Fi-Alliance-OSS/Ed-Fi-Extensions
-          path: Ed-Fi-Alliance-Extensions/
-       
     - name: Checkout Ed-Fi-Extensions
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
           path: Ed-Fi-Extensions/    
-          
-    - name: Copy build.githubactions.ps1 to Ed-Fi-Extensions
-      shell: pwsh
-      run: |
-        cp ./Ed-Fi-Alliance-Extensions/build.githubactions.ps1 ./
-        rm -rf ./Ed-Fi-Alliance-Extensions
-    
+   
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
@@ -105,19 +93,7 @@ jobs:
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
           path: Ed-Fi-Extensions/
-    
-    - name: Checkout Alliance Ed-Fi-Extensions (for build.githubactions.ps1)
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
-      with:
-          repository: Ed-Fi-Alliance-OSS/Ed-Fi-Extensions
-          path: Ed-Fi-Alliance-Extensions/
-
-    - name: Copy build.githubactions.ps1 to Ed-Fi-Extensions
-      shell: pwsh
-      run: |
-        cp ./Ed-Fi-Alliance-Extensions/build.githubactions.ps1 ./
-        rm -rf ./Ed-Fi-Alliance-Extensions
-        
+       
     - name: Checkout Ed-Fi-ODS-Implementation
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
       with:
@@ -129,6 +105,19 @@ jobs:
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/          
+          
+    - name: Download TPDM-Community-Model Artifact
+      uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
+      with:
+          workflow: build-model.yml
+          repo: Ed-Fi-Exchange-OSS/Ed-Fi-TPDM-Community-Model
+          path: TPDM-Community-Model
+
+    - name: Move Artifact files to extension
+      working-directory: TPDM-Community-Model
+      run: |
+          Move-Item .\Versions\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/Versions/1.2.0/Standard/5.0.0/ -force
+          dir -R
           
     - name: Is pull request branch exists in Ed-Fi-ODS-Implementation
       working-directory: ./Ed-Fi-Extensions/
