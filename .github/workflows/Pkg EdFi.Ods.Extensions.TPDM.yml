@@ -38,7 +38,7 @@ env:
   REF_NAME:  ${{ GITHUB.REF_NAME }}
   REPOSITORY_DISPATCH_BRANCH: ${{ github.event.client_payload.branch }}
   REPOSITORY_OWNER: ${{ GITHUB.REPOSITORY_OWNER }}
-  Data-Standard-Version: '5.0.0'
+  Data-Standard-Version: "5.0.0"
 
 jobs:
   FindStandardAndExtensionVersions:
@@ -61,7 +61,7 @@ jobs:
             echo "INFORMATIONAL_VERSION=${{ github.event.inputs.INFORMATIONAL_VERSION }}" >> $env:GITHUB_ENV
           }
           if ("${{ github.event.inputs.Data-Standard-Version  }}" -ne "") {
-            echo "ODS_version=${{ github.event.inputs.Data-Standard-Version }}" >> $env:GITHUB_ENV
+            echo "Data-Standard-Version=${{ github.event.inputs.Data-Standard-Version }}" >> $env:GITHUB_ENV
           }
 
     - name: Checkout Ed-Fi-Extensions
