@@ -117,6 +117,7 @@ jobs:
       working-directory: TPDM-Community-Model
       run: |
           cd *
+          ls -aR
           mv ./Versions/ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/Versions/1.2.0/Standard/5.0.0/
           ls -aR
           
