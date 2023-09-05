@@ -22,7 +22,7 @@ jobs:
       - name: Download package
         uses: dawidd6/action-download-artifact@1cf11afe3f1874cee82a8d5a2b45c0fd63f0fa22
         with:
-          workflow: build-nuget-package.yml
+          workflow: Pkg EdFi.Ods.Extensions.TPDM.yml
           path: publish
       
       - name: Publish
