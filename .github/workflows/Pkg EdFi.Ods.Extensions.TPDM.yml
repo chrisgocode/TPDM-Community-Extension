@@ -118,7 +118,6 @@ jobs:
       run: |
           cd *
           cp -RT ./* ${{ github.workspace }}/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/Versions/
-          ls -aR
           
     - name: Is pull request branch exists in Ed-Fi-ODS-Implementation
       working-directory: ./Ed-Fi-Extensions/
