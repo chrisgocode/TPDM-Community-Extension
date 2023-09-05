@@ -49,8 +49,8 @@ jobs:
       StandardVersions: ${{ steps.Set_StandardVersions.outputs.StandardVersions }}
       ExtensionVersions: ${{ steps.Set_ExtensionVersions.outputs.ExtensionVersions }}
     steps:
-      - name: Set env variables
-        run: |
+    - name: Set env variables
+       run: |
           if ("${{ github.event.inputs.Ed-Fi-ODS-ref  }}" -ne "") {
             echo "ods_ref=${{ github.event.inputs.Ed-Fi-ODS-ref }}" >> $env:GITHUB_ENV
           }
