@@ -116,8 +116,8 @@ jobs:
     - name: Move Artifact files to extension
       working-directory: TPDM-Community-Model
       run: |
-          Move-Item .\Versions\ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/Versions/1.2.0/Standard/5.0.0/ -force
-          dir -R
+          Move-Item ./Versions/ ${{ github.workspace }}/TPDM-Community-Extension/Extensions/EdFi.Ods.Extensions.TPDM/Versions/1.2.0/Standard/5.0.0/ -force
+          ls -aR
           
     - name: Is pull request branch exists in Ed-Fi-ODS-Implementation
       working-directory: ./Ed-Fi-Extensions/
