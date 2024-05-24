@@ -194,8 +194,6 @@ jobs:
       shell: pwsh
       run: |
         .\build.githubactions.ps1 pack -Configuration ${{ env.CONFIGURATION }} -InformationalVersion ${{ env.INFORMATIONAL_VERSION}} -BuildCounter ${{ github.run_number }} -BuildIncrementer ${{env.BUILD_INCREMENTER}} -PackageName "EdFi.Suite3.Ods.Extensions.TPDM.Community.${{ matrix.ExtensionVersion }}.Standard.${{ matrix.StandardVersion }}"  -ExtensionVersion ${{ matrix.ExtensionVersion }} -StandardVersion ${{ matrix.StandardVersion }} -NuspecFilePath "$env:GITHUB_WORKSPACE/Ed-Fi-Extensions/Extensions/EdFi.Ods.Extensions.TPDM/EdFi.Ods.Extensions.TPDM.nuspec"
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Maximum Path Length Limitation Check
       working-directory: ./Ed-Fi-Extensions/
       run: |
