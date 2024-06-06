@@ -1,5 +1,7 @@
 # TPDM-Community-Extension
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Ed-Fi-Exchange-OSS/TPDM-Community-Extension/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Ed-Fi-Exchange-OSS/TPDM-Community-Extension)
+
 This repository hosts the code for the Ed-Fi TPDM-Community extension that can be deployed as plugins to extend ODS/API implementations
 
 ## Legal Information
