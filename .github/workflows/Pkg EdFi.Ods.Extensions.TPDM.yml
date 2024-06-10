@@ -38,7 +38,7 @@ env:
   REF_NAME:  ${{ GITHUB.REF_NAME }}
   REPOSITORY_DISPATCH_BRANCH: ${{ github.event.client_payload.branch }}
   REPOSITORY_OWNER: ${{ GITHUB.REPOSITORY_OWNER }}
-  Data-Standard-Version: "5.0.0"
+  Data-Standard-Version: "5.1.0"
 
 jobs:
   FindStandardAndExtensionVersions:
@@ -65,19 +65,19 @@ jobs:
           }
 
     - name: Checkout Ed-Fi-Extensions
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           path: Ed-Fi-Extensions/
 
     - name: Checkout Ed-Fi-ODS
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
           ref: ${{ env.ods_ref }}
 
     - name: Checkout Ed-Fi-ODS-Implementation
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           path: Ed-Fi-ODS-Implementation/
@@ -124,20 +124,20 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Checkout TPDM-Community-Extension
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           path: Ed-Fi-Extensions/
           ref: DATASTD-2173
 
     - name: Checkout Ed-Fi-ODS
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS
           path: Ed-Fi-ODS/
           ref: ${{ env.ods_ref }}
 
     - name: Checkout Ed-Fi-ODS-Implementation
-      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           repository: Ed-Fi-Alliance-OSS/Ed-Fi-ODS-Implementation
           path: Ed-Fi-ODS-Implementation/

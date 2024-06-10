@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>EdFi.Suite3.Ods.Extensions.TPDM.Community.1.2.0.Standard.5.0.0</id>
+    <id>EdFi.Suite3.Ods.Extensions.TPDM.Community.1.2.0.Standard.5.1.0</id>
     <version>1.2.0</version>
     <authors>Ed-Fi Alliance</authors>
     <owners>Ed-Fi Alliance</owners>
-	  <copyright>$copyright$</copyright>	  
+	  <copyright>$copyright$</copyright>
     <projectUrl>https://github.com/Ed-Fi-Exchange-OSS/TPDM-Community-Extension</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>EdFi.Suite3.Ods.Extensions.TPDM</description>
@@ -13,8 +13,8 @@
   </metadata>
   <files>
   <file src="../../LICENSE" />
-    <file src="Versions/1.2.0/Standard/5.0.0/Artifacts/**/*.sql" target="Artifacts/."/>
-    <file src="Versions/1.2.0/Standard/5.0.0/Artifacts/**/*.json" target="Artifacts/."/>
-    <file src="bin\$configuration$\net6.0\EdFi.Ods.Extensions.TPDM.dll" target="."/>
+    <file src="Versions/1.2.0/Standard/5.1.0/Artifacts/**/*.sql" target="Artifacts/."/>
+    <file src="Versions/1.2.0/Standard/5.1.0/Artifacts/**/*.json" target="Artifacts/."/>
+    <file src="bin\$configuration$\net8.0\EdFi.Ods.Extensions.TPDM.dll" target="."/>
   </files>
 </package>
