@@ -28,7 +28,7 @@ on:
       Data-Standard-Version:
         type: string
         required: false
-        description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.0.0"
+        description: "Data-Standard-Version: The version of the Data Standard the extention package will work with. Default: 5.1.0"
 
 env:
   INFORMATIONAL_VERSION: "7.2"
@@ -127,7 +127,6 @@ jobs:
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
           path: Ed-Fi-Extensions/
-          ref: DATASTD-2173
 
     - name: Checkout Ed-Fi-ODS
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
