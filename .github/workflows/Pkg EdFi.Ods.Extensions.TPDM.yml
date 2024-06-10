@@ -38,7 +38,7 @@ env:
   REF_NAME:  ${{ GITHUB.REF_NAME }}
   REPOSITORY_DISPATCH_BRANCH: ${{ github.event.client_payload.branch }}
   REPOSITORY_OWNER: ${{ GITHUB.REPOSITORY_OWNER }}
-  Data-Standard-Version: "5.2.0"
+  Data-Standard-Version: "5.1.0"
 
 jobs:
   FindStandardAndExtensionVersions:
